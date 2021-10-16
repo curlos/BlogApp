@@ -8,3 +8,7 @@ body {
   margin: 0;
   font-family: Playfair Display;
 }
+
+a {
+  text-decoration: none;
+}
