@@ -47,7 +47,7 @@ const Post = () => {
         <div></div>
 
         <div>
-          <div><i class="far fa-comment-dots"></i> {postObj.comments}</div>
+          <div><i class="far fa-comments"></i> {postObj.comments}</div>
         </div>
       </div>
       {ReactHtmlParser(postObj.content)}

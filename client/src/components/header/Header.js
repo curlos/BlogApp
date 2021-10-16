@@ -24,8 +24,12 @@ const Header = () => {
           <button>
             <Link to="/new-post">Write</Link>
           </button>
-          <button>Login</button>
-          <button>Register</button>
+          <button>
+            <Link to="/login">Login</Link>
+          </button>
+          <button>
+            <Link to="/register">Register</Link>
+          </button>
         </div>
       </div>
 

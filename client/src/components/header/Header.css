@@ -21,12 +21,20 @@
   text-align: center;
 }
 
+.mainTitle a {
+  color: #ffffff;
+}
+
 .searchButton, .userButtons {
   flex: 1;
 }
 
 .userButtons {
   text-align: right;
+}
+
+.userButtons a {
+  color: black;
 }
 
 .headerContainerBottom {
@@ -37,4 +45,5 @@
   font-family: Fira Sans;
   font-size: 16px;
   font-weight: 300;
+  border-top: 1px solid #2462a5;
 }

@@ -9,6 +9,8 @@ import Header from './components/header/Header'
 import Posts from './components/posts/Posts'
 import Post from './components/post/Post'
 import PostForm from './components/post_form/PostForm'
+import Login from './components/login/Login'
+import Register from './components/register/Register'
 import './App.css';
 
 function App() {
@@ -29,6 +31,14 @@ function App() {
 
           <Route path="/post/:id" exact>
             <Post />
+          </Route>
+
+          <Route path="/login">
+            <Login />
+          </Route>
+
+          <Route path="/register">
+            <Register />
           </Route>
         </Switch>
       </Router>
