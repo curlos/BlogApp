@@ -1,0 +1,40 @@
+.headerContainerTop, .headerContainerBottom {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  font-size: 20px;
+  background-color: #3075C1;
+  color: #ffffff;
+}
+
+.headerContainerTop button {
+  border: none;
+  border-radius: 6px;
+  padding: 6px;
+  margin-right: 10px;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+.mainTitle {
+  flex: 2;
+  text-align: center;
+}
+
+.searchButton, .userButtons {
+  flex: 1;
+}
+
+.userButtons {
+  text-align: right;
+}
+
+.headerContainerBottom {
+  justify-content: center;
+  gap: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-family: Fira Sans;
+  font-size: 16px;
+  font-weight: 300;
+}
