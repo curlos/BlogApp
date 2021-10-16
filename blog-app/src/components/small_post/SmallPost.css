@@ -1,0 +1,24 @@
+.smallPostContainer {
+  display: flex;
+  align-items: center;
+  height: 150px;
+  border-bottom: 1px solid lightgray;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.smallPostInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+  margin-left: 10px;
+}
+
+.imageContainer {
+  height: 100%;
+}
+
+img {
+  height: 100%;
+}
