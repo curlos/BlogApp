@@ -44,3 +44,19 @@ img {
   font-size: 20px;
   margin-right: 4px;
 }
+
+.commentsContainer {
+  width: 100%;
+}
+
+.loginToAdd {
+  font-family: Fira Sans;
+  color: #3075C1;
+  cursor: pointer;
+  width: 100%;
+  margin: 10px auto;
+}
+
+.loginToAdd:hover {
+  text-decoration: underline;
+}
