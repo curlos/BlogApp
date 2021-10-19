@@ -3,19 +3,26 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useHistory
 } from "react-router-dom";
 import * as EmailValidator from 'email-validator';
 import { passwordStrength } from 'check-password-strength'
+import UserContext from '../../contexts/UserContext'
 import './Register.css'
+import axios from 'axios'
 
 const Register = () => {
+
+  const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
+  const history = useHistory()
 
   const [firstName, setFirstName] = useState({value: '', valid: false})
   const [lastName, setLastName] = useState({value: '', valid: false})
   const [email, setEmail] = useState({value: '', valid: false})
   const [password, setPassword] = useState({value: '', strength: false})
   const [confirmPassword, setConfirmPassword] = useState({value: '', strength: false})
+  const [errMessage, setErrMessage] = useState('')
 
   const handleInputChange = (e, inputType) => {
     console.log(inputType)
@@ -95,18 +102,56 @@ const Register = () => {
     return password.value === confirmPassword.value
   }
 
-  console.log([
-    firstName,
-    lastName,
-    email,
-    password,
-    confirmPassword
-  ])
+  const allValid = () => {
+    console.log([firstName, lastName, email, password])
+    
+    for (let obj of [firstName, lastName, email, password]) {
+      if (obj.strength) {
+        continue
+      }
 
+      if (!obj.valid) {
+        return false
+      }
+    }
+
+    return true
+  }
+
+  const handleRegister = async (e) => {
+    e.preventDefault()
+
+    if (!allValid()) {
+      return
+    }
+
+    console.log('reg')
+
+    const body = {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: email.value,
+      password: password.value
+    }
+
+    const response = await axios.post('http://localhost:8888/users/register', body)
+    
+    console.log(response.data)
+
+    if (response.data.result) {
+      history.push('/')
+    } else if (response.data.error) {
+      setErrMessage(response.data.error)
+    }
+  }
+
+  if (Object.keys(loggedInUser).length > 0) {
+    history.push('/')
+  }
   
 
   return (
-    <div className="registerContainer">
+    <form className="registerContainer" onSubmit={handleRegister}>
       <h1>
         Create Account
       </h1>
@@ -154,11 +199,13 @@ const Register = () => {
       {!passwordsMatch() ? <div className="invalidInput">Passwords do not match</div> : ''}
 
       <div>
-        <button className="createAccountButton">Create Account</button>
+        <button className="createAccountButton" onClick={handleRegister}>Create Account</button>
       </div>
 
+      <div className="errorMessage">{errMessage}</div>
 
-    </div>
+
+    </form>
   )
 }
 

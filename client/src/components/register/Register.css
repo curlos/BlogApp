@@ -103,3 +103,7 @@ meter.strong::-webkit-meter-optimum-value {
 .passwordContainer {
   text-align: left;
 }
+
+.errorMessage {
+  color: red;
+}
