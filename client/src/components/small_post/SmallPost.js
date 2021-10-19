@@ -6,6 +6,7 @@ import './SmallPost.css'
 
 const SmallPost = ({post}) => {
 
+  const IMAGES_LOCATION = 'http://localhost:8888/images/'
   const [author, setAuthor] = useState({})
 
   useEffect(() => {
@@ -17,12 +18,10 @@ const SmallPost = ({post}) => {
     fetchFromAPI()
   }, [])
 
-  console.log(author)
-
   return (
     <Link to={`/post/${post._id}`} className="smallPostContainer">
       <div className="imageContainer">
-        <img src={post.headerImage || 'https://cdn.theathletic.com/app/uploads/2019/02/03234241/USATSI_12105980-e1549255831654-1024x683.jpg'} alt={post.title} />
+        <img src={IMAGES_LOCATION + post.headerImage} alt={post.title} />
       </div>
 
       <div className="smallPostInfo">
