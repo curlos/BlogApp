@@ -1,0 +1,52 @@
+.commentContainer {
+  font-family: Fira Sans;
+  font-weight: 400;
+  text-align: left;
+
+  border-bottom: 2px solid rgb(185, 185, 185);
+}
+
+.topCommentInfo {
+  margin-top: 30px;
+}
+
+.topCommentInfo span {
+  margin-right: 10px;
+}
+
+.commentAuthor {
+  font-weight: bold;
+}
+
+.fromNowTime, .commentLikes {
+  font-size: 14px;
+}
+
+.fromNowTime {
+  color: gray;
+}
+
+.commentContent {
+  margin: 30px auto;
+}
+
+.commentActions {
+  display: flex;
+  justify-content: flex-end;
+  margin: 15px auto;
+}
+
+.commentActions span {
+  margin-right: 30px;
+}
+
+.fa-heart, .fa-reply {
+  cursor: pointer;
+}
+
+.replyComment {
+  border-bottom: none;
+  margin-left: 20px;
+  border-left: 3px solid black;
+  padding-left: 15px;
+}
