@@ -13,16 +13,18 @@ const Posts = () => {
   useEffect(() => {
     const fetchFromAPI = async () => {
       const response = await axios.get(SERVER_URL)
+      console.log(response.data)
       setPosts(response.data)
     }
 
     fetchFromAPI()
   }, [])
 
+  console.log(posts)
+
   return (
     <div className="postsContainer">
       {posts.map((post) => {
-        console.log(post)
         return (
           <SmallPost post={post}/>
         )

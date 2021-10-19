@@ -19,11 +19,11 @@
   font-size: 18px;
 }
 
-.imageContainer {
+.smallPostContainer {
   height: 100%;
 }
 
-img {
+.smallPostContainer img {
   height: 100%;
   width: 150px;
 }

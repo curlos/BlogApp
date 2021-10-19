@@ -28,7 +28,9 @@ const Comment = ({ post, commentID, replyComment }) => {
 
   return (
     <div>
+
       {loading ? 'Loading...' : (
+        comment.comment.replyingTo && !replyComment ? null :
         <div className={`commentContainer ${replyComment ? 'replyComment' : ''}`}>
           <div className="topCommentInfo">
             <span className="commentAuthor">{comment.author.firstName} {comment.author.lastName}</span>
@@ -48,6 +50,7 @@ const Comment = ({ post, commentID, replyComment }) => {
               <i class="fas fa-reply" onClick={() => setShowReply(true)}></i>
             </span>
           </div>
+          
 
           <CommentContainer post={post} parentComment={comment} showReply={showReply} setShowReply={setShowReply} setReplies={setReplies}/>
 
@@ -61,8 +64,6 @@ const Comment = ({ post, commentID, replyComment }) => {
       )}
     </div>
   )
-
-  
 }
 
 export default Comment;

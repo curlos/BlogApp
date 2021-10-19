@@ -13,6 +13,7 @@ const Post = () => {
   const { id } = useParams()
   const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
   const SERVER_URL = 'http://localhost:8888/posts'
+  const IMAGES_LOCATION = 'http://localhost:8888/images/'
 
   const [post, setPost] = useState({post: {}, author: {}})
   const [comments, setComments] = useState([])
@@ -32,6 +33,9 @@ const Post = () => {
     fetchFromAPI()
   }, [comments])
 
+  console.log('COMMENSTBCHD')
+  console.log(post.post.comments)
+
   return (
     <div>
       {loading ? 'Loading...' : (
@@ -39,7 +43,7 @@ const Post = () => {
       
           {post.post.headerImage ? (
               <div className="headerImage">
-                <img src={post.post.headerImage} alt={post.post.title}/>
+                <img src={IMAGES_LOCATION + post.post.headerImage} alt={post.post.title}/>
               </div>
             ) : null}
     
@@ -56,8 +60,15 @@ const Post = () => {
               <div></div>
     
               <div>
-                <div><i class="far fa-comments"></i> {post.post.comments.length}</div>
+
+                <span className="commentsIconContainer"><i class="far fa-comments"></i> {post.post.comments.length}</span>
+                
               </div>
+            </div>
+
+            <div className="postActionIcons">
+                <Link to={`/edit-post/${id}`}><i class="fas fa-edit"></i></Link>
+                <span><i class="fas fa-trash"></i></span>
             </div>
             
             <div>

@@ -40,11 +40,6 @@ img {
   font-weight: 500;
 }
 
-.fa-comment-dots {
-  font-size: 20px;
-  margin-right: 4px;
-}
-
 .commentsContainer {
   width: 100%;
 }
@@ -59,4 +54,37 @@ img {
 
 .loginToAdd:hover {
   text-decoration: underline;
+}
+
+.authorAndDate .fa-comments {
+  color: red;
+}
+
+.icons {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.icons i, .icons span{
+  font-size: 18px;
+}
+
+.fa-edit {
+  color: rgb(16, 153, 78);
+  cursor: pointer;
+}
+
+.fa-trash {
+  color: rgb(253, 40, 40);
+  cursor: pointer;
+}
+
+.postActionIcons {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.postActionIcons i {
+  margin-left: 10px;
 }

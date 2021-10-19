@@ -33,6 +33,10 @@ function App() {
               <PostForm />
             </Route>
 
+            <Route path="/edit-post/:id" exact>
+              <PostForm />
+            </Route>
+
             <Route path="/post/:id" exact>
               <Post />
             </Route>
