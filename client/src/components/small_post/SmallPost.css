@@ -1,7 +1,5 @@
 .smallPostContainer {
   display: flex;
-  align-items: center;
-  height: 150px;
   border-bottom: 1px solid lightgray;
   padding-top: 20px;
   padding-bottom: 20px;
@@ -13,6 +11,12 @@
   justify-content: flex-start;
   height: 100%;
   margin-left: 10px;
+  font-family: Fira Sans;
+}
+
+.smallPostTitle {
+  font-weight: bold;
+  font-size: 18px;
 }
 
 .imageContainer {
@@ -21,4 +25,14 @@
 
 img {
   height: 100%;
+  width: 150px;
+}
+
+.additionalInfo span {
+  margin-right: 10px;
+  color: rgb(105, 105, 105);
+}
+
+.fa-comment {
+  margin-right: 5px;
 }

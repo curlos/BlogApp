@@ -35,6 +35,8 @@ router.post('/comment/reply', async (req, res) => {
   const comment = new Comment({...req.body})
 
   const parentComment = await Comment.findOne({_id: req.body.replyingTo})
+  const post = await Post.findOne({_id: req.body.post})
+  post.comments = [...post.comments, comment]
   parentComment.replies = [...parentComment.replies, comment]
 
   comment.save()
