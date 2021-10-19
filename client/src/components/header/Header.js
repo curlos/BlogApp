@@ -6,8 +6,19 @@ import {
   Link
 } from "react-router-dom";
 import './Header.css'
+import UserContext from '../../contexts/UserContext'
+import axios from "axios";
 
 const Header = () => {
+  
+  const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
+
+  console.log(loggedInUser)
+
+  const handleLogout = async () => {
+    await axios.get('http://localhost:8888/users/logout')
+    setLoggedInUser({})
+  }
 
   return (
     <div>
@@ -24,12 +35,22 @@ const Header = () => {
           <button>
             <Link to="/new-post">Write</Link>
           </button>
-          <button>
-            <Link to="/login">Login</Link>
-          </button>
-          <button>
-            <Link to="/register">Register</Link>
-          </button>
+
+          {Object.keys(loggedInUser).length > 0 ? (
+            <span>
+              <button onClick={handleLogout}>Logout</button>
+              <span>{loggedInUser.firstName} {loggedInUser.lastName}</span>
+            </span>
+          ) : (
+            <span>
+              <button>
+              <Link to="/login">Login</Link>
+              </button>
+              <button>
+                <Link to="/register">Register</Link>
+              </button>
+            </span>
+          )}
         </div>
       </div>
 
