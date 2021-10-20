@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: Fira Sans;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   text-align: center;
   padding: 20px;
   width: 100%;
@@ -14,7 +14,7 @@
   width: 450px;
 }
 
-.fab, .fas {
+.registerContainer .fab, .registerContainer .fas {
   float: left;
   font-size: 20px;
 }

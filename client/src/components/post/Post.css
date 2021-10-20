@@ -24,7 +24,7 @@ img {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  font-family: Fira Sans;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   font-size: 14px;
   margin: 20px auto;
   
@@ -45,7 +45,7 @@ img {
 }
 
 .loginToAdd {
-  font-family: Fira Sans;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   color: #3075C1;
   cursor: pointer;
   width: 100%;
@@ -70,12 +70,12 @@ img {
 }
 
 .fa-edit {
-  color: rgb(16, 153, 78);
+  color: #B5D0C7;
   cursor: pointer;
 }
 
 .fa-trash {
-  color: rgb(253, 40, 40);
+  color: #B62C2D;
   cursor: pointer;
 }
 
@@ -83,6 +83,7 @@ img {
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 15px;
 }
 
 .postActionIcons i {
