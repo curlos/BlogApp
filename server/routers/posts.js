@@ -16,7 +16,14 @@ router.get('/post/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   const post = new Post({...req.body})
+  const user = await User.findOne({_id: req.body.author})
+  console.log(req.body)
+  console.log(user)
+  console.log(user.posts)
+  user.posts = [...user.posts, post]
+
   const savedPost = await post.save()
+  await user.save()
 
   res.json(savedPost)
 })
@@ -26,7 +33,7 @@ router.put('/post/:id', async (req, res) => {
   post.title = req.body.title
   post.headerImage = req.body.headerImage
   post.content = req.body.content
-  post.comments = req.body.comments
+  post.categories = req.body.categories
 
   const updatedPost = await post.save()
   res.json(updatedPost)

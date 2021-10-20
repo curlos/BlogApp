@@ -2,6 +2,7 @@ const express = require('express')
 const passport = require("passport");
 const Comment = require('../models/Comment')
 const Post = require('../models/Post')
+const User = require('../models/User')
 const router = express.Router()
 
 router.get('/:postID', async (req, res) => {
@@ -24,10 +25,14 @@ router.post('/comment', async (req, res) => {
   const comment = new Comment({...req.body})
 
   const post = await Post.findOne({_id: req.body.post})
+  const user = await User.findOne({_id: req.body.author})
+
   post.comments = [...post.comments, comment]
+  user.comments = [...user.comments, comment]
 
   comment.save()
   post.save()
+  user.save()
   res.json(comment)
 })
 
@@ -36,12 +41,17 @@ router.post('/comment/reply', async (req, res) => {
 
   const parentComment = await Comment.findOne({_id: req.body.replyingTo})
   const post = await Post.findOne({_id: req.body.post})
-  post.comments = [...post.comments, comment]
+  const user = await User.findOne({_id: req.body.author})
+
   parentComment.replies = [...parentComment.replies, comment]
+  post.comments = [...post.comments, comment]
+  user.comments = [...user.comments, comment]
 
   comment.save()
-  post.save()
   parentComment.save()
+  post.save()
+  user.save()
+  
   res.json(comment)
 })
 
