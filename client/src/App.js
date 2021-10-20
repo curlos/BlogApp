@@ -12,11 +12,13 @@ import PostForm from './components/post_form/PostForm'
 import Login from './components/login/Login'
 import Register from './components/register/Register'
 import UserContext from './contexts/UserContext';
+import UserProfile from './components/user_profile/UserProfile'
 import './App.css';
 
 function App() {
 
   const [loggedInUser, setLoggedInUser] = useState({})
+  const [filters, setFilters] = useState({})
 
   return (
     <div className="App">
@@ -27,6 +29,14 @@ function App() {
           <Switch>
             <Route path="/" exact>
               <Posts />
+            </Route>
+
+            <Route path="/posts" exact>
+              <Posts />
+            </Route>
+
+            <Route path="/author/:id" exact>
+              <UserProfile />
             </Route>
 
             <Route path="/new-post" exact>
@@ -41,11 +51,11 @@ function App() {
               <Post />
             </Route>
 
-            <Route path="/login">
+            <Route path="/login" exact>
               <Login />
             </Route>
 
-            <Route path="/register">
+            <Route path="/register" exact>
               <Register />
             </Route>
           </Switch>
