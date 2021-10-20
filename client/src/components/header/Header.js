@@ -3,7 +3,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useHistory
 } from "react-router-dom";
 import './Header.css'
 import UserContext from '../../contexts/UserContext'
@@ -12,19 +13,49 @@ import axios from "axios";
 const Header = () => {
   
   const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
+  const history = useHistory()
+  const categories = ['TECH', 'LIFE', 'SPORTS', 'ART', 'FOOD', 'DIY', 'HEALTH', 'FITNESS']
 
   console.log(loggedInUser)
 
   const handleLogout = async () => {
     await axios.get('http://localhost:8888/users/logout')
     setLoggedInUser({})
+    history.push('/')
   }
 
   return (
     <div>
       <div className="headerContainerTop">
-        <div className="searchButton">
-          <i className="fas fa-search"></i>
+        <div className="headerContainerTopLeft">
+          <span className="searchButton">
+            <i className="fas fa-search"></i>
+          </span>
+
+          {Object.keys(loggedInUser).length > 0 ? (
+              <span>
+                <span className="dropdown">
+                  <span className="dropbtn">{loggedInUser.firstName} {loggedInUser.lastName}</span>
+                  <i class="fas fa-chevron-down"></i>
+
+                  <div class="dropdown-content">
+                    <Link to={`/author/${loggedInUser._id}`}>My Profile</Link>
+                    <Link to="/settings">Settings</Link>
+                    <a onClick={handleLogout}>Log Out</a>
+                  </div>
+                </span>
+
+              </span>
+            ) : (
+              <span>
+                <button>
+                <Link to="/login">Login</Link>
+                </button>
+                <button>
+                  <Link to="/register">Register</Link>
+                </button>
+              </span>
+            )}
         </div>
 
         <div className="mainTitle">
@@ -35,34 +66,12 @@ const Header = () => {
           <button>
             <Link to="/new-post">Write</Link>
           </button>
-
-          {Object.keys(loggedInUser).length > 0 ? (
-            <span>
-              <button onClick={handleLogout}>Logout</button>
-              <span>{loggedInUser.firstName} {loggedInUser.lastName}</span>
-            </span>
-          ) : (
-            <span>
-              <button>
-              <Link to="/login">Login</Link>
-              </button>
-              <button>
-                <Link to="/register">Register</Link>
-              </button>
-            </span>
-          )}
         </div>
       </div>
 
       <div className="headerContainerBottom">
-        <span>TECH</span>
-        <span>LIFE</span>
-        <span>SPORTS</span>
-        <span>ART</span>
-        <span>FOOD</span>
-        <span>DIY</span>
-        <span>HEALTH</span>
-        <span>FITNESS</span>
+        {categories.map((category) => <Link to={`/posts?category=${category}`}>{category}</Link>)}
+
       </div>
     </div>
   )
