@@ -1,6 +1,6 @@
 .postFormContainer {
   padding: 30px;
-  font-family: Fira Sans;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
 }
 
 input {
@@ -16,12 +16,12 @@ input[type="checkbox"] {
   margin-bottom: 20px;
 }
 
-.postArticleButton {
+.postArticleButton, .editArticleButton {
   background-color: #3075C1;
   color: white;
   border: none;
 }
 
-.postArticleButton:hover {
+.postArticleButton:hover, .editArticleButton:hover {
   background-color: #215083;
 }

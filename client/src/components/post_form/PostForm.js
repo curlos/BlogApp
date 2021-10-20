@@ -17,6 +17,7 @@ const PostForm = () => {
     author: Object.keys(loggedInUser).length > 0 && loggedInUser._id,
     editorContent: '',
     file: null,
+    headerImage: '',
     selectedCategories: []
   })
 
@@ -30,9 +31,10 @@ const PostForm = () => {
         ...newPost,
         title: response.data.title,
         editorContent: response.data.content,
-        file: response.data.headerImage,
+        headerImage: response.data.headerImage,
         selectedCategories: response.data.categories
       })
+
     }
 
     if (id) {
@@ -40,9 +42,10 @@ const PostForm = () => {
     }
   }, [])
 
-  const handleEditorChange = (e) => {
-    console.log(e.target.getContent())
-    setNewPost({...newPost, editorContent: e.target.getContent()})
+  const handleEditorChange = (newValue, editor) => {
+    console.log('sup')
+    console.log(newValue)
+    setNewPost({...newPost, editorContent: newValue})
   }
 
   const handleCheck = (e) => {
@@ -94,6 +97,8 @@ const PostForm = () => {
     console.log(body)
     const response = await axios.post('http://localhost:8888/posts', body)
     console.log(response.data)
+
+    history.push('/login')
   }
 
   if (Object.keys(loggedInUser).length < 1) {
@@ -104,14 +109,35 @@ const PostForm = () => {
     const body = {
       title: newPost.title,
       author: newPost.author,
-      headerImage: typeof newPost.file === 'object' ? newPost.file.name : newPost.file,
+      headerImage: newPost.headerImage || (newPost.file && newPost.file.name),
       categories: newPost.selectedCategories,
       content: newPost.editorContent,
     }
+
+    if (newPost.file) {
+      const data = new FormData()
+      const filename = Date.now() + newPost.file.name
+      data.append('name', filename)
+      data.append('file', newPost.file)
+      body.headerImage = filename
+
+      try {
+        const response = await axios.post('http://localhost:8888/upload', data)
+
+        console.log(response)
+      } catch (err) {
+        console.log(err)
+        return
+      }
+    }
+
     console.log(newPost)
     console.log(body)
     const response = await axios.put(`http://localhost:8888/posts/post/${id}`, body)
+    console.log(response)
     console.log(response.data)
+
+    history.push('/')
   }
 
   console.log(newPost)
@@ -119,7 +145,7 @@ const PostForm = () => {
   return (
     <div className="postFormContainer">
       {(newPost.file || newPost.headerImage) && (
-        <img className="writeImg" src={typeof newPost.file === 'string' && newPost.file ? IMAGES_LOCATION + newPost.file : URL.createObjectURL(newPost.file)} alt="" />
+        <img className="writeImg" src={newPost.file ? URL.createObjectURL(newPost.file) : IMAGES_LOCATION + newPost.headerImage } alt="" />
       )}
       <div>Title: </div>
       <input onChange={(e) => setNewPost({...newPost, title: e.target.value})} value={newPost.title}></input>
@@ -144,7 +170,7 @@ const PostForm = () => {
       </div>
 
       <Editor
-        initialValue={newPost.editorContent}
+        initialValue={'<p>Initial Content</p>'}
         init={{
           height: 500,
           plugins: [
@@ -159,7 +185,8 @@ const PostForm = () => {
             alignleft aligncenter alignright | \
             bullist numlist outdent indent | help'
         }}
-        onChange={handleEditorChange}
+        value={newPost.editorContent}
+        onEditorChange={handleEditorChange}
         className="editor"
       />
 
