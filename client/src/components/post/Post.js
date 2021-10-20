@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useHistory } from 'react-router-dom'
 import ReactHtmlParser from 'react-html-parser';
 import moment from 'moment'
 import './Post.css'
@@ -11,6 +11,7 @@ import UserContext from '../../contexts/UserContext'
 const Post = () => {
 
   const { id } = useParams()
+  const history = useHistory()
   const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
   const SERVER_URL = 'http://localhost:8888/posts'
   const IMAGES_LOCATION = 'http://localhost:8888/images/'
@@ -33,8 +34,21 @@ const Post = () => {
     fetchFromAPI()
   }, [comments])
 
-  console.log('COMMENSTBCHD')
-  console.log(post.post.comments)
+  const handleDeletePost = async () => {
+    console.log('deleting...')
+
+    const confirmDelete = window.confirm("Are you sure? This action is irreversible!")
+
+    if (confirmDelete) {
+      const response = await axios.delete(`${SERVER_URL}/post/${id}`)
+      console.log(response.data)
+      history.push('/')
+    }
+  }
+
+  console.log(post.author)
+  console.log(loggedInUser)
+  console.log(post.author._id === loggedInUser._id)
 
   return (
     <div>
@@ -65,11 +79,12 @@ const Post = () => {
                 
               </div>
             </div>
-
-            <div className="postActionIcons">
-                <Link to={`/edit-post/${id}`}><i class="fas fa-edit"></i></Link>
-                <span><i class="fas fa-trash"></i></span>
-            </div>
+            {post.author._id === loggedInUser._id ? (
+              <div className="postActionIcons">
+              <Link to={`/edit-post/${id}`}><i class="fas fa-edit"></i></Link>
+              <span onClick={handleDeletePost}><i class="fas fa-trash"></i></span>
+          </div>
+            ) : null}
             
             <div>
               {ReactHtmlParser(post.post.content)}
@@ -80,7 +95,7 @@ const Post = () => {
             ) : <CommentContainer post={post} setComments={setComments} showAddComment={showAddComment} setShowAddComment={setShowAddComment}/>}
 
     
-            <div className="commentsContainer">
+            <div href='#comments' className="commentsContainer">
               {post.post.comments.map((commentID) => <Comment commentID={commentID} post={post}/>)}
             </div>
           
