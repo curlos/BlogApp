@@ -1,0 +1,21 @@
+.smallCommentContainer {
+  margin-bottom: 10px;
+  border-bottom: 1px solid lightgray;
+  font-weight: 400;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.fa-circle {
+  font-size: 8px;
+}
+
+.smallCommentHeader {
+  color: gray;
+  display: flex;
+  justify-content: space-between;
+}
+
+.smallCommentFromNow {
+  margin-left: 10px;
+}
