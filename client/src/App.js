@@ -13,6 +13,7 @@ import Login from './components/login/Login'
 import Register from './components/register/Register'
 import UserContext from './contexts/UserContext';
 import UserProfile from './components/user_profile/UserProfile'
+import Settings from './components/settings/Settings'
 import './App.css';
 
 function App() {
@@ -57,6 +58,10 @@ function App() {
 
             <Route path="/register" exact>
               <Register />
+            </Route>
+
+            <Route path="/settings" exact>
+              <Settings />
             </Route>
           </Switch>
         </UserContext.Provider>

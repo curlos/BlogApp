@@ -40,8 +40,17 @@
   margin-right: 30px;
 }
 
-.fa-heart, .fa-reply {
+.fa-thumbs-up, .fa-thumbs-down, .fa-reply {
   cursor: pointer;
+  color: rgb(73, 73, 73);
+}
+
+.liked {
+  color: #0A7DDA;
+}
+
+.commentActions span .commentUpvotes {
+  margin: auto 10px;
 }
 
 .replyComment {

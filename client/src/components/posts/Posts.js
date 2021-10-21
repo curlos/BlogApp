@@ -66,7 +66,7 @@ const Posts = () => {
     <div className="postsContainer">
       {posts.map((post) => {
         return (
-          <SmallPost post={post}/>
+          <SmallPost postID={post._id}/>
         )
       })}
     </div>

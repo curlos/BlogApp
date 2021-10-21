@@ -44,7 +44,9 @@ const Comment = ({ post, commentID, replyComment }) => {
 
           <div className="commentActions">
             <span>
-              <i class="far fa-heart"></i> {comment.comment.likes.length}
+              <i class="fas fa-thumbs-up"></i>
+              <span className="commentUpvotes">{comment.comment.likes.length}</span>
+              <i class="fas fa-thumbs-down"></i>
             </span>
             <span>
               <i class="fas fa-reply" onClick={() => setShowReply(true)}></i>
