@@ -1,0 +1,25 @@
+.settingsContainer {
+  padding: 30px;
+}
+
+.settingsTitle {
+  border-bottom: 1px solid lightgray;
+}
+
+.aboutMeTextarea {
+  border-radius: 0px;
+  border: 1px solid lightgray;
+}
+
+.updateProfileButton {
+  background-color: #3075C1;
+  color: white;
+  border: none;
+}
+
+.deleteAccountButton {
+  background-color: red;
+  color: white;
+  border: none;
+  margin-left: 20px;
+}
