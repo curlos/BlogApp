@@ -5,9 +5,9 @@ const User = require('../models/User')
 const bcrypt = require("bcryptjs")
 const router = express.Router()
 
-router.get('/', (req, res) => {
-  console.log(req.user)
-  res.json(req.user)
+router.get('/', async (req, res) => {
+  const users = await User.find({})
+  res.json(users)
 })
 
 router.get("/logout", (req, res) => {
@@ -53,7 +53,6 @@ router.post("/register", async (req, res, next) => {
 
 router.post("/login", (req, res, next) => {
 
-  console.log(req.body)
   passport.authenticate("local", (err, user, info) => {
     if (err) throw err;
     if (!user) res.send("Wrong credentials");
@@ -65,6 +64,49 @@ router.post("/login", (req, res, next) => {
       });
     }
   })(req, res, next);
+});
+
+router.put("/user/update/:id", async (req, res, next) => {
+  const newEmail = req.body.email
+  const newPassword = req.body.password
+
+  if (newEmail) {
+    const userFound = await User.findOne({lowerCaseEmail: newEmail.toLowerCase().trim()})
+
+    console.log(userFound)
+    console.log(String(userFound._id))
+    console.log(req.params.id)
+
+    console.log(userFound.length)
+
+    if (userFound && String(userFound._id) !== req.params.id) {
+      return res.json({error: 'Email taken'})
+    }
+  }
+
+  const user = await User.findOne({_id: req.params.id})
+    
+  user.firstName = req.body.firstName ? req.body.firstName : user.firstName
+  user.lastName = req.body.lastName ? req.body.lastName : user.lastName
+  user.email = req.body.email ? req.body.email : user.email
+  user.lowerCaseEmail = req.body.email ? req.body.email : user.lowerCaseEmail
+  user.aboutMe = req.body.aboutMe ? req.body.aboutMe : user.aboutMe
+
+  if (newPassword) {
+    bcrypt.hash(newPassword, 10, async (err, hashedPassword) => {
+      if (err) {
+        return err
+      }
+
+      console.log(newPassword)
+
+      user.password = hashedPassword
+    })
+  }
+
+  const updatedUser = await user.save()
+
+  res.json(updatedUser)
 });
 
 router.get('/user/:id', async (req, res) => {
