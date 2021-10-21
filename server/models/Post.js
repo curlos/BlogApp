@@ -8,6 +8,8 @@ const Post = mongoose.model(
     headerImage: { type: String },
     content: { type: String, required: true },
     categories: [String],
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
     totalComments: {type: Number, default: 0}
   },

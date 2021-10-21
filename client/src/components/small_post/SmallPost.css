@@ -5,6 +5,10 @@
   padding-bottom: 20px;
 }
 
+.linkPostContainer {
+  display: flex;
+}
+
 .smallPostInfo {
   display: flex;
   flex-direction: column;
@@ -35,4 +39,13 @@
 
 .fa-comment {
   margin-right: 5px;
+}
+
+.postVotes {
+  text-align: center;
+  margin-right: 20px;
+}
+
+.postVotesNum {
+  margin: 5px auto;
 }

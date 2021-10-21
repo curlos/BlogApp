@@ -75,7 +75,7 @@ const UserProfile = () => {
         <div className="userProfilePage">
           <div className="userInfo">
             <div className="firstAndLastName">{user.userInfo.firstName} {user.userInfo.lastName}</div>
-            <div>User info</div>
+            <div>{user.userInfo.aboutMe}</div>
           </div>
 
           <div className="userNavbar">
