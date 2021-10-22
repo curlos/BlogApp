@@ -23,3 +23,11 @@
   border: none;
   margin-left: 20px;
 }
+
+.profilePicImg {
+  border-radius: 50%;
+  object-fit: cover;
+  width: 150px;
+  height: 150px;
+  margin: 10px auto;
+}

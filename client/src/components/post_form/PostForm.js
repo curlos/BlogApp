@@ -130,12 +130,8 @@ const PostForm = () => {
         return
       }
     }
-
-    console.log(newPost)
-    console.log(body)
+    
     const response = await axios.put(`http://localhost:8888/posts/post/${id}`, body)
-    console.log(response)
-    console.log(response.data)
 
     history.push('/')
   }

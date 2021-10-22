@@ -12,6 +12,7 @@ const Comment = ({ post, commentID, replyComment }) => {
   const history = useHistory()
   const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
   const SERVER_URL = 'http://localhost:8888/posts'
+  const IMAGES_LOCATION = 'http://localhost:8888/images/'
 
   const [commentInfo, setCommentInfo] = useState({comment: {}, author: {}})
   const [replies, setReplies] = useState({})
@@ -67,9 +68,12 @@ const Comment = ({ post, commentID, replyComment }) => {
         comment.replyingTo && !replyComment ? null :
         <div className={`commentContainer ${replyComment ? 'replyComment' : ''}`}>
           <div className="topCommentInfo">
+            {author.profilePic ? (
+              <img src={IMAGES_LOCATION + author.profilePic} alt={`${author.firstName} ${author.lastName} Profile Pic`} className="profilePicImageSmall"/>
+            ) : null}
             <Link to={`/author/${author._id}`} className="commentAuthor">{author.firstName} {author.lastName}</Link>
             <span className="fromNowTime">{moment(comment.createdAt).fromNow()}</span>
-            <span className="commentLikes">{comment.likes.length} {comment.likes.length === 1 ? 'like' : 'likes'}</span>
+            <span className="commentLikes">{comment.likes.length - comment.dislikes.length} {(comment.likes.length - comment.dislikes.length) === 1 || (comment.likes.length - comment.dislikes.length) === -1 ? 'like' : 'likes'}</span>
           </div>
           
           <div className="commentContent">

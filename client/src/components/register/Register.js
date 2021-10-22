@@ -131,7 +131,7 @@ const Register = () => {
       firstName: firstName.value,
       lastName: lastName.value,
       email: email.value,
-      password: password.value
+      password: password.value,
     }
 
     const response = await axios.post('http://localhost:8888/users/register', body)

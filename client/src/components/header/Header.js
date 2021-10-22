@@ -28,9 +28,6 @@ const Header = () => {
     <div>
       <div className="headerContainerTop">
         <div className="headerContainerTopLeft">
-          <span className="searchButton">
-            <i className="fas fa-search"></i>
-          </span>
 
           {Object.keys(loggedInUser).length > 0 ? (
               <span>
