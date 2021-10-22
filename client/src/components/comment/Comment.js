@@ -1,52 +1,86 @@
 import React, { useState, useEffect } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import moment from 'moment'
 import './Comment.css'
 import axios from 'axios';
 import CommentContainer from '../comment_container/CommentContainer';
+import UserContext from '../../contexts/UserContext'
 
 
 const Comment = ({ post, commentID, replyComment }) => {
 
+  const history = useHistory()
+  const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
   const SERVER_URL = 'http://localhost:8888/posts'
-  const [comment, setComment] = useState({comment: {}, author: {}})
+
+  const [commentInfo, setCommentInfo] = useState({comment: {}, author: {}})
   const [replies, setReplies] = useState({})
   const [loading, setLoading] = useState(true)
   const [showReply, setShowReply] = useState(false)
+  const { comment, author } = commentInfo
 
   useEffect(() => {
     const fetchFromAPI = async () => {
       const commentResponse = await axios.get(`http://localhost:8888/comments/comment/${commentID}`)
       const authorResponse = await axios.get(`http://localhost:8888/users/user/${commentResponse.data.author}`)
-      setComment({comment: commentResponse.data, author: authorResponse.data})
+      setCommentInfo({comment: commentResponse.data, author: authorResponse.data})
       setLoading(false)
     }
 
     fetchFromAPI()
   }, [replies])
 
-  console.log(comment)
+  const handleLikeComment = async () => {
+
+    if (Object.keys(loggedInUser).length === 0) {
+      history.push('/login')
+      return
+    }
+
+    const body = { userID: loggedInUser._id}
+    const response = await axios.put(`http://localhost:8888/comments/comment/like/${comment._id}`, body)
+
+    setCommentInfo({...commentInfo, comment: response.data.updatedComment})
+    setLoggedInUser(response.data.updatedUser)
+
+  }
+
+  const handleDislikeComment = async () => {
+
+    if (Object.keys(loggedInUser).length === 0) {
+      history.push('/login')
+      return
+    }
+
+    const body = { userID: loggedInUser._id}
+    const response = await axios.put(`http://localhost:8888/comments/comment/dislike/${comment._id}`, body)
+
+    setCommentInfo({...commentInfo, comment: response.data.updatedComment})
+    setLoggedInUser(response.data.updatedUser)
+
+  }
 
   return (
     <div>
 
       {loading ? 'Loading...' : (
-        comment.comment.replyingTo && !replyComment ? null :
+        comment.replyingTo && !replyComment ? null :
         <div className={`commentContainer ${replyComment ? 'replyComment' : ''}`}>
           <div className="topCommentInfo">
-            <span className="commentAuthor">{comment.author.firstName} {comment.author.lastName}</span>
-            <span className="fromNowTime">{moment(comment.comment.createdAt).fromNow()}</span>
-            <span className="commentLikes">{comment.comment.likes.length} likes</span>
+            <Link to={`/author/${author._id}`} className="commentAuthor">{author.firstName} {author.lastName}</Link>
+            <span className="fromNowTime">{moment(comment.createdAt).fromNow()}</span>
+            <span className="commentLikes">{comment.likes.length} {comment.likes.length === 1 ? 'like' : 'likes'}</span>
           </div>
           
           <div className="commentContent">
-            {comment.comment.content}
+            {comment.content}
           </div>
 
           <div className="commentActions">
             <span>
-              <i class="fas fa-thumbs-up"></i>
-              <span className="commentUpvotes">{comment.comment.likes.length}</span>
-              <i class="fas fa-thumbs-down"></i>
+              <i className={`fas fa-thumbs-up ${Object.keys(loggedInUser).length > 0 && loggedInUser.likedComments && loggedInUser.likedComments.includes(comment._id) ? 'liked' : null}`} onClick={handleLikeComment}></i>
+              <span className="commentUpvotes">{comment.likes.length - comment.dislikes.length}</span>
+              <i className={`fas fa-thumbs-down ${Object.keys(loggedInUser).length > 0 && loggedInUser.dislikedComments && loggedInUser.dislikedComments.includes(comment._id) ? 'disliked' : null}`} onClick={handleDislikeComment}></i>
             </span>
             <span>
               <i class="fas fa-reply" onClick={() => setShowReply(true)}></i>
@@ -54,9 +88,9 @@ const Comment = ({ post, commentID, replyComment }) => {
           </div>
           
 
-          <CommentContainer post={post} parentComment={comment} showReply={showReply} setShowReply={setShowReply} setReplies={setReplies}/>
+          <CommentContainer post={post} parentComment={commentInfo} showReply={showReply} setShowReply={setShowReply} setReplies={setReplies}/>
 
-          {comment.comment.replies.map((commentID) => {
+          {comment.replies.map((commentID) => {
             return (
               <Comment post={post} commentID={commentID} replyComment={true}/>
               

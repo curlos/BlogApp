@@ -16,6 +16,11 @@
 
 .commentAuthor {
   font-weight: bold;
+  margin-right: 10px;
+}
+
+.commentAuthor:hover {
+  text-decoration: underline;
 }
 
 .fromNowTime, .commentLikes {
@@ -45,7 +50,7 @@
   color: rgb(73, 73, 73);
 }
 
-.liked {
+.liked, .disliked {
   color: #0A7DDA;
 }
 
