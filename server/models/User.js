@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   aboutMe: {type: String},
   email: { type: String, required: true },
   password: { type: String, required: true },
-  profilePic: { data: Buffer, contentType: String},
+  profilePic: { type: String },
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
   likedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
   dislikedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],

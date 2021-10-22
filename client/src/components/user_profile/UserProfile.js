@@ -14,13 +14,14 @@ import SamllComment from '../small_comment/SmallComment'
 const UserProfile = () => {
   
   const { id } = useParams()
+  const IMAGES_LOCATION = 'http://localhost:8888/images/'
+
   const [user, setUser] = useState({userInfo: {}, posts: [], comments: []})
   const [loading, setLoading] = useState(true)
   const [selectedType, setSelectedType] = useState('POSTS')
   
   useEffect(() => {
     const fetchFromAPI = async () => {
-      console.log(id)
       const response = await axios.get(`http://localhost:8888/users/user/${id}`)
       const userPosts = await getAllUserPosts(response.data.posts)
       const userComments = await getAllUserComments(response.data.comments)
@@ -37,7 +38,6 @@ const UserProfile = () => {
     const allUserPosts = []
 
     for (let postID of postIDs) {
-      console.log(postID)
       const response = await axios.get(`http://localhost:8888/posts/post/${postID}`)
       allUserPosts.push(response.data)
     }
@@ -67,11 +67,22 @@ const UserProfile = () => {
     return newComments
   }
 
+  console.log(user)
+
+
+
   return (
     <div>
       {loading ? 'Loading...' : (
         <div className="userProfilePage">
           <div className="userInfo">
+            {user.userInfo.profilePic ? (
+              <div>
+                <img src={IMAGES_LOCATION + user.userInfo.profilePic} alt={`${user.userInfo.firstName} ${user.userInfo.lastName} Profile Pic`} className="profilePicImg"/>
+              </div>
+            ) : <div>
+                  <img src={IMAGES_LOCATION + 'default_user.jpeg'} alt={`${user.userInfo.firstName} ${user.userInfo.lastName} Profile Pic`} className="profilePicImg"/>
+                </div>}
             <div className="firstAndLastName">{user.userInfo.firstName} {user.userInfo.lastName}</div>
             <div>{user.userInfo.aboutMe}</div>
           </div>
@@ -85,8 +96,14 @@ const UserProfile = () => {
           {selectedType === 'OVERVIEW' || selectedType === 'POSTS' ? (
             <div className="userPosts">
               {user.posts.map((post) => {
+                console.log(post)
+
+                if (!post) {
+                  return null
+                }
+
                 return (
-                  <SmallPost post={post} />
+                  <SmallPost postID={post._id} />
                 )
               })}
             </div>

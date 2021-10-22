@@ -35,9 +35,10 @@ router.post("/register", async (req, res, next) => {
     const user = new User({
       email: req.body.email,
       password: hashedPassword,
-      reviews: [],
-      shoeFavorites: [],
-      reviewFavorites: [],
+      profilePic: 'default_user.jpeg',
+      aboutMe: '',
+      likes: [],
+      dislikes: [],
       lowerCaseEmail: req.body.email.toLowerCase(),
       firstName: req.body.firstName,
       lastName: req.body.lastName
@@ -91,6 +92,7 @@ router.put("/user/update/:id", async (req, res, next) => {
   user.email = req.body.email ? req.body.email : user.email
   user.lowerCaseEmail = req.body.email ? req.body.email : user.lowerCaseEmail
   user.aboutMe = req.body.aboutMe ? req.body.aboutMe : user.aboutMe
+  user.profilePic = req.body.profilePic ? req.body.profilePic : user.profilePic
 
   if (newPassword) {
     bcrypt.hash(newPassword, 10, async (err, hashedPassword) => {
