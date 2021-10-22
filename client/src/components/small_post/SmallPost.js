@@ -63,14 +63,13 @@ const SmallPost = ({postID}) => {
             <div className="postVotesNum">{(post.likes && post.dislikes && post.likes.length - post.dislikes.length) || 0}</div>
             <div><i className={`fas fa-thumbs-down ${Object.keys(loggedInUser).length > 0 && loggedInUser.dislikedPosts && loggedInUser.dislikedPosts.includes(post._id) ? 'disliked' : null}`} onClick={handleDislikePost}></i></div>
           </div>
-
-          post.likes.length: {post.likes.length}
-          post.dislikes.length: {post.dislikes.length}
     
           <Link to={`/post/${post._id}`} className="linkPostContainer">
-            <div className="imageContainer">
-              <img src={IMAGES_LOCATION + post.headerImage} alt={post.title} />
-            </div>
+            {post.headerImage ? (
+              <div className="imageContainer">
+                <img src={IMAGES_LOCATION + post.headerImage} alt={post.title}/>
+              </div>
+            ) : null}
     
             <div className="smallPostInfo">
               <div>
