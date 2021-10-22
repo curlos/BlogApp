@@ -9,10 +9,13 @@ const SERVER_URL = 'http://localhost:8888/posts'
 const Posts = () => {
 
   const query = new URLSearchParams(useLocation().search)
+  const sortFilters = ['new', 'oldest', 'comments', 'likes']
   const [posts, setPosts] = useState([])
+  const [sortFilter, setSortFilter] = useState('likes')
 
   useEffect(() => {
     const fetchFromAPI = async () => {
+      console.log('getting new posts')
       const response = await axios.get(SERVER_URL)
       console.log(response.data)
       const newPosts = getFilteredPosts(response.data)
@@ -52,18 +55,58 @@ const Posts = () => {
     }
 
     if (filteredPosts === null) {
-      return allPosts
+      return getSortedPosts(allPosts)
     }
     
-    console.log(filteredPosts)
+    console.log(sortByNew(filteredPosts))
 
-    return filteredPosts
+    return getSortedPosts(filteredPosts)
+  }
+
+  const getSortedPosts = (posts) => {
+    switch (sortFilter) {
+      case 'new':
+        return sortByNew(posts)
+      case 'oldest':
+        return sortByOldest(posts)
+      case 'likes':
+        return sortByMostLikes(posts)
+      case 'comments':
+        return sortByMostComments(posts)
+      default:
+        return posts
+    }
+  }
+
+  const sortByNew = (postsToFilter) => {
+    return postsToFilter.sort((postOne, postTwo) => (postOne.createdAt > postTwo.createdAt ? -1 : 1))
+  }
+
+  const sortByOldest = (postsToFilter) => {
+    return postsToFilter.sort((postOne, postTwo) => (postOne.createdAt > postTwo.createdAt ? 1 : -1))
+  }
+
+  const sortByMostLikes = (postsToFilter) => {
+    return postsToFilter.sort((postOne, postTwo) => {
+      const postOneTotalLikes = postOne.likes.length - postOne.dislikes.length
+      const postTwoTotalLikes = postTwo.likes.length - postTwo.dislikes.length
+
+      return (
+        (postOneTotalLikes > postTwoTotalLikes ? -1 : 1)
+      )
+    })
+  }
+
+  const sortByMostComments = (postsToFilter) => {
+    return postsToFilter.sort((postOne, postTwo) => (postOne.comments.length > postTwo.comments.length ? -1 : 1))
   }
 
   
 
   return (
     <div className="postsContainer">
+      <i className="fas fa-search"></i>
+      <input type="text" className="searchBar"></input>
       {posts.map((post) => {
         return (
           <SmallPost postID={post._id}/>

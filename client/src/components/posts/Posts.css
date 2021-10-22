@@ -1,3 +1,13 @@
 .postsContainer {
   padding: 20px;
 }
+
+.searchBar {
+  width: 130px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+
+.searchBar:focus {
+  width: 80%;
+}
