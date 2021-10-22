@@ -51,7 +51,6 @@ const SmallPost = ({postID}) => {
 
     setPostInfo({...postInfo, post: response.data.updatedPost})
     setLoggedInUser(response.data.updatedUser)
-
   }
 
   return (
@@ -62,7 +61,7 @@ const SmallPost = ({postID}) => {
           <div className="postVotes">
             <div><i className={`fas fa-thumbs-up ${Object.keys(loggedInUser).length > 0 && loggedInUser.likedPosts && loggedInUser.likedPosts.includes(post._id) ? 'liked' : null}`} onClick={handleLikePost}></i></div>
             <div className="postVotesNum">{(post.likes && post.dislikes && post.likes.length - post.dislikes.length) || 0}</div>
-            <div><i className="fas fa-thumbs-down" onClick={handleDislikePost}></i></div>
+            <div><i className={`fas fa-thumbs-down ${Object.keys(loggedInUser).length > 0 && loggedInUser.dislikedPosts && loggedInUser.dislikedPosts.includes(post._id) ? 'disliked' : null}`} onClick={handleDislikePost}></i></div>
           </div>
 
           post.likes.length: {post.likes.length}

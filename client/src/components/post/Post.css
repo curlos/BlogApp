@@ -89,3 +89,17 @@ img {
 .postActionIcons i {
   margin-left: 10px;
 }
+
+.postContainer .postVotes {
+  display: flex;
+  justify-content: flex-end;
+  text-align: left;
+}
+
+.postContainer .postVotes .postVotesNum {
+  margin: auto 10px;
+}
+
+.postCommentsContainer {
+  width: 100%;
+}

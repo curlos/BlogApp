@@ -20,6 +20,7 @@ const UserProfile = () => {
   
   useEffect(() => {
     const fetchFromAPI = async () => {
+      console.log(id)
       const response = await axios.get(`http://localhost:8888/users/user/${id}`)
       const userPosts = await getAllUserPosts(response.data.posts)
       const userComments = await getAllUserComments(response.data.comments)
@@ -36,6 +37,7 @@ const UserProfile = () => {
     const allUserPosts = []
 
     for (let postID of postIDs) {
+      console.log(postID)
       const response = await axios.get(`http://localhost:8888/posts/post/${postID}`)
       allUserPosts.push(response.data)
     }
@@ -64,10 +66,6 @@ const UserProfile = () => {
 
     return newComments
   }
-
-  console.log(user)
-
-
 
   return (
     <div>

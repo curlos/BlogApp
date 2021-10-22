@@ -11,6 +11,7 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/post/:id', async (req, res) => {
+  console.log(req.params)
   const post = await Post.findOne({_id: req.params.id})
   res.json(post)
 })
@@ -56,7 +57,7 @@ router.put('/post/like/:id', async (req, res) => {
     post.likes = [...post.likes, user]
     post.dislikes = post.dislikes.filter((userID) => String(userID) != user._id)
     user.likedPosts = [...user.likedPosts, post._id]
-    user.dislikedPosts = user.dislikedPosts.filter((dislikedPost) => dislikedPost !== post)
+    user.dislikedPosts = user.dislikedPosts.filter((postID) => String(postID) != post._id)
   }
 
   const updatedPost = await post.save()
@@ -105,8 +106,13 @@ router.put('/post/dislike/:id', async (req, res) => {
 })
 
 router.delete('/post/:id', async (req, res) => {
-  const deletePost = await Post.findByIdAndDelete(req.params.id)
-  res.json(deletePost)
+  const post = await Post.findByIdAndDelete(req.params.id)
+  const user = await User.findOne({_id: post.author})
+  user.posts = user.posts.filter((postID) => String(postID) !== String(post._id))
+
+  console.log(user.posts.length)
+  await user.save()
+  res.json(post)
 })
 
 module.exports = router;
