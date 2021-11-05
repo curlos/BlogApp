@@ -34,7 +34,8 @@
 }
 
 .commentContent {
-  margin: 30px auto;
+  margin-top: 5px;
+  padding-left: 60px;
 }
 
 .commentActions {

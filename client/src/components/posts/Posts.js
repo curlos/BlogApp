@@ -10,8 +10,10 @@ const Posts = () => {
 
   const query = new URLSearchParams(useLocation().search)
   const sortFilters = ['new', 'oldest', 'comments', 'likes']
-  const [posts, setPosts] = useState([])
-  const [sortFilter, setSortFilter] = useState('likes')
+  const [postsInfo, setPostsInfo] = useState({posts: [], allPosts: [], sortFilter: 'likes'})
+  const { posts, allPosts, sortFilter } = postsInfo
+  const [searchText, setSearchText] = useState('')
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchFromAPI = async () => {
@@ -19,19 +21,16 @@ const Posts = () => {
       const response = await axios.get(SERVER_URL)
       console.log(response.data)
       const newPosts = getFilteredPosts(response.data)
-      setPosts(newPosts)
+      setPostsInfo({...postsInfo, posts: newPosts, allPosts: newPosts})
+      setLoading(false)
     }
 
     fetchFromAPI()
-  }, [query.get('category'), query.get('search')])
+  }, [query.get('category')])
 
   const getFilteredPosts = (allPosts) => {
 
     let filteredPosts = null
-
-    console.log(query)
-    console.log(query.get('category'))
-    console.log(query.get('search'))
 
     if (query.get('category')) {
       const requiredCategory = query.get('category').toUpperCase()
@@ -43,16 +42,6 @@ const Posts = () => {
       })
     }
 
-    if (query.get('search')) {
-      const requiredSearch = query.get('search').toLowerCase()
-      filteredPosts = filteredPosts.filter((post) => {
-        for (let key of Object.keys(post)) {
-          if (typeof post[key] === 'string' && post[key].toLowerCase().includes(requiredSearch)) {
-            return post
-          }
-        }
-      })
-    }
 
     if (filteredPosts === null) {
       return getSortedPosts(allPosts)
@@ -101,17 +90,44 @@ const Posts = () => {
     return postsToFilter.sort((postOne, postTwo) => (postOne.comments.length > postTwo.comments.length ? -1 : 1))
   }
 
+  const handleSearch = (e) => {
+    setLoading(true)
+
+    e.preventDefault()
+
+    const filteredPosts = allPosts.filter((post) => {
+      for (let key of Object.keys(post)) {
+        if (typeof post[key] === 'string' && post[key].toLowerCase().includes(searchText.toLowerCase())) {
+          return post
+        }
+      }
+
+      return null
+    })
+
+    console.log(filteredPosts)
+
+    setPostsInfo({...postsInfo, posts: []})
+    setPostsInfo({...postsInfo, posts: filteredPosts})
+    setLoading(false)
+  }
+
   
 
   return (
     <div className="postsContainer">
-      <i className="fas fa-search"></i>
-      <input type="text" className="searchBar"></input>
+      <form onSubmit={handleSearch}>
+        <i className="fas fa-search" onClick={handleSearch}></i>
+        <input type="text" className="searchBar" value={searchText} onChange={(e) => setSearchText(e.target.value)}></input>
+      </form>
+
       {posts.map((post) => {
+        console.log(post)
         return (
-          <SmallPost postID={post._id}/>
+          <SmallPost postID={post._id} category={query.get('category')}/>
         )
       })}
+
     </div>
   )
 }

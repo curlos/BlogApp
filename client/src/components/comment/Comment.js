@@ -70,7 +70,7 @@ const Comment = ({ post, commentID, replyComment }) => {
           <div className="topCommentInfo">
             {author.profilePic ? (
               <img src={IMAGES_LOCATION + author.profilePic} alt={`${author.firstName} ${author.lastName} Profile Pic`} className="profilePicImageSmall"/>
-            ) : null}
+            ) : <img src={IMAGES_LOCATION + 'default_user.jpeg'} alt={`${author.firstName} ${author.lastName} Profile Pic`} className="profilePicImageSmall"/>}
             <Link to={`/author/${author._id}`} className="commentAuthor">{author.firstName} {author.lastName}</Link>
             <span className="fromNowTime">{moment(comment.createdAt).fromNow()}</span>
             <span className="commentLikes">{comment.likes.length - comment.dislikes.length} {(comment.likes.length - comment.dislikes.length) === 1 || (comment.likes.length - comment.dislikes.length) === -1 ? 'like' : 'likes'}</span>

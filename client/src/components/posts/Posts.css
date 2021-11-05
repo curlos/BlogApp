@@ -2,13 +2,20 @@
   padding: 20px;
 }
 
+.postsContainer .fa-search {
+  cursor: pointer;
+}
+
 .searchBar {
-  width: 130px;
-  border-radius: 10px;
+  font-size: 18px;
+  width: 20%;
+  border: none;
+  border-bottom: 1px solid lightgray;
   -webkit-transition: width 0.4s ease-in-out;
   transition: width 0.4s ease-in-out;
 }
 
 .searchBar:focus {
   width: 80%;
+  outline: none;
 }

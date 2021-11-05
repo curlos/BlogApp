@@ -5,7 +5,7 @@ import moment from 'moment'
 import UserContext from '../../contexts/UserContext'
 import './SmallPost.css'
 
-const SmallPost = ({postID}) => {
+const SmallPost = ({postID, category}) => {
 
   const { loggedInUser, setLoggedInUser } = React.useContext(UserContext)
   const IMAGES_LOCATION = 'http://localhost:8888/images/'
@@ -16,6 +16,8 @@ const SmallPost = ({postID}) => {
   const { post, author } = postInfo
 
   useEffect(() => {
+    setImageError(false)
+    
     const fetchFromAPI = async () => {
 
       const postResponse = await axios.get(`http://localhost:8888/posts/post/${postID}`)
@@ -25,7 +27,7 @@ const SmallPost = ({postID}) => {
     }
 
     fetchFromAPI()
-  }, [])
+  }, [postID, category])
 
   const handleLikePost = async () => {
 

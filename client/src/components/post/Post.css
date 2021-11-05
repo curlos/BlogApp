@@ -31,13 +31,18 @@ img {
 }
 
 .authorAndDate {
-  text-align: center;
+  display: flex;
+  align-items: center;
   flex: 2;
 }
 
 .author {
   margin-right: 20px;
   font-weight: 500;
+}
+
+.author:hover {
+  text-decoration: underline;
 }
 
 .commentsContainer {

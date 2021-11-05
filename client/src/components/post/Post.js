@@ -97,11 +97,17 @@ const Post = () => {
     
             <div className="postInfo">
               <div className="authorAndDate">
-                {author.profilePic ? (
-                  <img src={IMAGES_LOCATION + author.profilePic} alt={`${author.firstName} ${author.lastName} Profile Pic`} className="profilePicImageSmall"/>
-                ) : null}
-                <span className="author">{author.firstName} {author.lastName}</span>
-                <span>{moment(post.createdAt).format('MMMM Do, YYYY')}</span>
+                <Link to={`/author/${author._id}`}>
+                  {author.profilePic ? (
+                    <img src={IMAGES_LOCATION + author.profilePic} alt={`${author.firstName} ${author.lastName} Profile Pic`} className="profilePicImageSmall"/>
+                  ) : <img src={IMAGES_LOCATION + 'default_user.jpeg'} alt={`${author.firstName} ${author.lastName} Profile Pic`} className="profilePicImageSmall"/>}
+                </Link>
+
+                <Link to={`/author/${author._id}`}>
+                  <span className="author">{author.firstName} {author.lastName}</span>
+                </Link>
+                
+                <span className="postDate">{moment(post.createdAt).format('MMMM Do, YYYY')}</span>
               </div>
 
               <div className="postVotes">
