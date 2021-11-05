@@ -10,6 +10,7 @@ const SmallPost = ({postID}) => {
   const { loggedInUser, setLoggedInUser } = React.useContext(UserContext)
   const IMAGES_LOCATION = 'http://localhost:8888/images/'
   const [postInfo, setPostInfo] = useState({post: {}, author: {}})
+  const [imageError, setImageError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
   const { post, author } = postInfo
@@ -65,9 +66,9 @@ const SmallPost = ({postID}) => {
           </div>
     
           <Link to={`/post/${post._id}`} className="linkPostContainer">
-            {post.headerImage ? (
+            {post.headerImage && !imageError ? (
               <div className="imageContainer">
-                <img src={IMAGES_LOCATION + post.headerImage} alt={post.title}/>
+                <img src={IMAGES_LOCATION + post.headerImage} alt={post.title} onError={() => setImageError(true)}/>
               </div>
             ) : null}
     

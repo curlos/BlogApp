@@ -158,14 +158,6 @@ const Register = () => {
 
       <div className="loginQuery">Already have an account? <Link to="/login">Log in</Link></div>
 
-      <button><i class="fab fa-google"></i> Continue with Google</button>
-      <button><i class="fab fa-apple"></i> Continue with Apple</button>
-      <button><i class="fab fa-facebook-f"></i> Continue with Facebook</button>
-
-      <div className="orOption"><span>or</span></div>
-
-      <button><i class="fas fa-envelope"></i> Sign up with Email</button>
-
       <div className="names">
         <div className="firstNameContainer">
           <input type="text" placeholder="First Name" value={firstName.value} onChange={(e) => handleInputChange(e, 'firstName')}/>

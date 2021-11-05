@@ -62,15 +62,7 @@ const Login = () => {
         Welcome Back
       </h1>
 
-      <div className="loginQuery">Don't have an account? <Link to="/login">Sign up</Link></div>
-
-      <button><i class="fab fa-google"></i> Continue with Google</button>
-      <button><i class="fab fa-apple"></i> Continue with Apple</button>
-      <button><i class="fab fa-facebook-f"></i> Continue with Facebook</button>
-
-      <div className="orOption"><span>or</span></div>
-
-      <button><i class="fas fa-envelope"></i>Log in with Email</button>
+      <div className="loginQuery">Don't have an account? <Link to="/register">Sign up</Link></div>
 
       <form onSubmit={handleLogin}>
         <div>

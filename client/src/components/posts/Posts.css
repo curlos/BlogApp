@@ -4,6 +4,7 @@
 
 .searchBar {
   width: 130px;
+  border-radius: 10px;
   -webkit-transition: width 0.4s ease-in-out;
   transition: width 0.4s ease-in-out;
 }

@@ -20,6 +20,7 @@ const Post = () => {
   const [comments, setComments] = useState([])
   const [loading, setLoading] = useState(true)
   const [showAddComment, setShowAddComment] = useState(false)
+  const [imageError, setImageError] = useState(false)
 
   const { post, author} = postInfo
 
@@ -77,18 +78,16 @@ const Post = () => {
     }
   }
 
-  console.log(author)
-  console.log(loggedInUser)
-  console.log(author._id === loggedInUser._id)
+  console.log(post)
 
   return (
     <div>
       {loading ? 'Loading...' : (
         <div className="postContainer">
       
-          {post.headerImage ? (
+          {post.headerImage && !imageError ? (
               <div className="headerImage">
-                <img src={IMAGES_LOCATION + post.headerImage} alt={post.title}/>
+                <img src={IMAGES_LOCATION + post.headerImage} alt={post.title} onError={() => setImageError(true)}/>
               </div>
             ) : null}
     

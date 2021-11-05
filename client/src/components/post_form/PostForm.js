@@ -158,7 +158,7 @@ const PostForm = () => {
         {categories.map((category) => {
           return (
             <div>
-              <input type="checkbox" id={category} name={category} value={category} onClick={handleCheck} checked={newPost.selectedCategories.includes(category)}/>
+              <input type="checkbox" id={category} name={category} value={category} checked={newPost.selectedCategories.includes(category)} onClick={handleCheck}/>
               <label for={category}>{category}</label>
             </div>
           )

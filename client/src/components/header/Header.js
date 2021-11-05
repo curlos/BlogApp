@@ -44,13 +44,9 @@ const Header = () => {
 
               </span>
             ) : (
-              <span>
-                <button>
+              <span className="userButtons">
                 <Link to="/login">Login</Link>
-                </button>
-                <button>
-                  <Link to="/register">Register</Link>
-                </button>
+                <Link to="/register">Register</Link>
               </span>
             )}
         </div>
@@ -60,9 +56,7 @@ const Header = () => {
         </div>
 
         <div className="userButtons">
-          <button>
-            <Link to="/new-post">Write</Link>
-          </button>
+          <Link to="/new-post">Write</Link>
         </div>
       </div>
 
