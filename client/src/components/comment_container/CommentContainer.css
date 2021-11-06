@@ -10,6 +10,7 @@ textarea {
   resize: none;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
+  margin: 15px auto;
 }
 
 .newCommentActionButtons {
@@ -48,4 +49,5 @@ button {
 
 .miniTextArea {
   height: 80px;
+  margin: 15px auto;
 }

@@ -5,6 +5,7 @@ import './Comment.css'
 import axios from 'axios';
 import CommentContainer from '../comment_container/CommentContainer';
 import UserContext from '../../contexts/UserContext'
+import Skeleton from '../skeleton/Skeleton';
 
 
 const Comment = ({ post, commentID, replyComment }) => {
@@ -64,7 +65,7 @@ const Comment = ({ post, commentID, replyComment }) => {
   return (
     <div>
 
-      {loading ? 'Loading...' : (
+      {loading ? (comment.replyingTo ? <Skeleton type='commentReply' /> : <Skeleton type='comment' />) : (
         comment.replyingTo && !replyComment ? null :
         <div className={`commentContainer ${replyComment ? 'replyComment' : ''}`}>
           <div className="topCommentInfo">

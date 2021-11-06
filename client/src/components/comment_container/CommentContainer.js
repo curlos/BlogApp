@@ -31,7 +31,7 @@ const CommentContainer = ({ post, parentComment, setComments, showAddComment, se
     }
     const response = await axios.post(SERVER_URL, body)
     console.log(response.data)
-    setComments([post.post.comments, ...response.data._id])
+    setComments([...response.data._id, post.post.comments])
     setCommentText('')
     setShowAddComment(false)
   }

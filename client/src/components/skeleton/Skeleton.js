@@ -57,8 +57,27 @@ export default function Skeleton({ type }) {
     </div>
   );
 
+  const CommentSkeleton = () => {
+
+    return (
+      <div className={`commentSk ${type === 'commentReply' ? 'skReply' : ''}`}>
+        <div className="commentSkIcon"></div>
+        <div className="commentSkInfo">
+          <div className="commentSkDetails"></div>
+          <div className="commentSkContent"></div>
+          <div className="commentSkContent"></div>
+          <div className="commentSkContent"></div>
+          <div className="commentSkContent sm"></div>
+          <div className="commentSkActions"></div>
+        </div>
+      </div>
+    )
+  }
+
 
 
   if (type === "smallPost") return <SmallPostSkeleton />;
   if (type === "fullPost") return <FullPostSkeleton />
+  if (type === "comment") return <CommentSkeleton />
+  if (type === "commentReply") return <CommentSkeleton />
 }

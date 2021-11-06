@@ -4,6 +4,7 @@
   padding-bottom: 20px;
   border-bottom: 1px solid lightgray;
   animation: skeleton 1s ease infinite alternate;
+  border-radius: 20px;
 }
 
 @keyframes skeleton {
@@ -17,17 +18,20 @@
   height: 100px;
   width: 16px;
   margin-right: 20px;
+  border-radius: 20px;
 }
 
 .postSkImg {
   background-color: #acacac;
   width: 150px;
   height: 100px;
+  border-radius: 20px;
 }
 
 .postSkInfo {
   display: flex;
   width: 100%;
+  border-radius: 20px;
 }
 
 .postSkDetail {
@@ -35,6 +39,7 @@
   flex-direction: column;
   width: 100%;
   margin-left: 10px;
+  border-radius: 20px;
 }
 
 .postSkText {
@@ -42,10 +47,12 @@
   width: 40%;
   height: 20px;
   margin-bottom: 5px;
+  border-radius: 20px;
 }
 
 .postSkText.sm {
   width: 60%;
+  border-radius: 20px;
 }
 
 
@@ -190,4 +197,69 @@
   border-radius: 20px;
   margin: 5px;
   border-radius: 20px;
+}
+
+
+
+
+
+
+.commentSk {
+  display: flex;
+  width: 100%;
+  animation: skeleton 1s ease infinite alternate;
+}
+
+.commentSk.skReply {
+  padding-left: 20px;
+}
+
+@keyframes skeleton {
+  to {
+    opacity: 0.5;
+  }
+}
+
+.commentSkIcon {
+  height: 50px;
+  width: 50px;
+  background-color: #acacac;
+  border-radius: 50%;
+}
+
+.commentSkInfo {
+  width: 100%;
+  margin-top: 20px;
+  margin-left: 5px;
+}
+
+.commentSkDetails {
+  height: 15px;
+  width: 30%;
+  background-color: #acacac;
+  border-radius: 20px;
+  margin-bottom: 15px;
+}
+
+.commentSkContent {
+  height: 15px;
+  width: 100%;
+  background-color: #acacac;
+  border-radius: 20px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.commentSkContent.sm {
+  width: 60%;
+}
+
+.commentSkActions {
+  float: right;
+  height: 15px;
+  width: 30%;
+  background-color: #acacac;
+  border-radius: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
