@@ -74,10 +74,19 @@ export default function Skeleton({ type }) {
     )
   }
 
+  const UserProfileSkeleton = () => (
+    <div className="userProfileSk">
+      <div className="userProfileSkIcon"></div>
+      <div className="userProfileSkName"></div>
+      <div className="userProfileSkDesc"></div>
+    </div>
+  )
+
 
 
   if (type === "smallPost") return <SmallPostSkeleton />;
   if (type === "fullPost") return <FullPostSkeleton />
   if (type === "comment") return <CommentSkeleton />
   if (type === "commentReply") return <CommentSkeleton />
+  if (type === "userProfile") return <UserProfileSkeleton />
 }

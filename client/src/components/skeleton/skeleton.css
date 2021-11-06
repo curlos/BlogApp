@@ -263,3 +263,52 @@
   margin-top: 15px;
   margin-bottom: 15px;
 }
+
+
+
+
+
+.userProfileSk {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  padding: 20px;
+  animation: skeleton 1s ease infinite alternate;
+}
+
+@keyframes skeleton {
+  to {
+    opacity: 0.5;
+  }
+}
+
+.userProfileSkInfo {
+  width: 100%;
+}
+
+.userProfileSkIcon {
+  width: 150px;
+  height: 150px;
+  margin: 10px auto;
+  background-color: #acacac;
+  border-radius: 50%;
+}
+
+.userProfileSkName {
+  width: 25%;
+  height: 50px;
+  align-self: center;
+  background-color: #acacac;
+  border-radius: 20px;
+  margin: 10px auto;
+}
+
+.userProfileSkDesc {
+  width: 80%;
+  height: 22px;
+  align-self: center;
+  background-color: #acacac;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}

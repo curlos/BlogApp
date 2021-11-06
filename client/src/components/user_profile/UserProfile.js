@@ -10,6 +10,7 @@ import './UserProfile.css'
 import axios from "axios";
 import SmallPost from '../small_post/SmallPost'
 import SamllComment from '../small_comment/SmallComment'
+import Skeleton from "../skeleton/Skeleton";
 
 const UserProfile = () => {
   
@@ -73,7 +74,7 @@ const UserProfile = () => {
 
   return (
     <div>
-      {loading ? 'Loading...' : (
+      {loading ? <Skeleton type="userProfile"/> : (
         <div className="userProfilePage">
           <div className="userInfo">
             {user.userInfo.profilePic ? (
