@@ -48,6 +48,7 @@ const Login = () => {
 
     if (response.data.user) {
       setLoggedInUser(response.data.user)
+      localStorage.setItem('user', JSON.stringify(response.data.user))
       history.push('/')
     }
   }

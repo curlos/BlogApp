@@ -21,6 +21,7 @@ const Header = () => {
   const handleLogout = async () => {
     await axios.get('http://localhost:8888/users/logout')
     setLoggedInUser({})
+    localStorage.setItem('user', null)
     history.push('/')
   }
 

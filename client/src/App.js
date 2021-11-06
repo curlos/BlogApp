@@ -18,8 +18,10 @@ import './App.css';
 
 function App() {
 
-  const [loggedInUser, setLoggedInUser] = useState({})
+  const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem('user')) || {})
   const [filters, setFilters] = useState({})
+
+  console.log(loggedInUser)
 
   return (
     <div className="App">
