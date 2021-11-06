@@ -8,6 +8,7 @@
 
 .searchBar {
   font-size: 18px;
+  padding: 3px;
   width: 20%;
   border: none;
   border-bottom: 1px solid lightgray;
@@ -18,4 +19,31 @@
 .searchBar:focus {
   width: 80%;
   outline: none;
+}
+
+.sortAndSearch {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.sortTabOptions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+}
+
+.sortTabOptions div {
+  padding: 7px;
+  cursor: pointer;
+}
+
+.selectedSortFilter {
+  color: #3075C1;
+  background-color: rgb(240, 240, 240);
+  border-radius: 10px;
 }

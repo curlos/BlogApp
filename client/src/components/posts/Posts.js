@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import SmallPost from '../small_post/SmallPost'
+import { Pagination } from '../pagination/Pagination'
 import axios from 'axios'
 import './Posts.css'
 
@@ -13,6 +14,7 @@ const Posts = () => {
   const [postsInfo, setPostsInfo] = useState({posts: [], allPosts: [], sortFilter: 'likes'})
   const { posts, allPosts, sortFilter } = postsInfo
   const [searchText, setSearchText] = useState('')
+  const [paginatedPosts, setPaginatedPosts] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -26,7 +28,7 @@ const Posts = () => {
     }
 
     fetchFromAPI()
-  }, [query.get('category')])
+  }, [query.get('category'), postsInfo.sortFilter, paginatedPosts])
 
   const getFilteredPosts = (allPosts) => {
 
@@ -54,7 +56,7 @@ const Posts = () => {
 
   const getSortedPosts = (posts) => {
     switch (sortFilter) {
-      case 'new':
+      case 'newest':
         return sortByNew(posts)
       case 'oldest':
         return sortByOldest(posts)
@@ -91,7 +93,6 @@ const Posts = () => {
   }
 
   const handleSearch = (e) => {
-    setLoading(true)
 
     e.preventDefault()
 
@@ -105,30 +106,42 @@ const Posts = () => {
       return null
     })
 
-    console.log(filteredPosts)
-
     setPostsInfo({...postsInfo, posts: []})
     setPostsInfo({...postsInfo, posts: filteredPosts})
-    setLoading(false)
   }
+
+  console.log(paginatedPosts)
 
   
 
   return (
-    <div className="postsContainer">
-      <form onSubmit={handleSearch}>
-        <i className="fas fa-search" onClick={handleSearch}></i>
-        <input type="text" className="searchBar" value={searchText} onChange={(e) => setSearchText(e.target.value)}></input>
-      </form>
+    loading ? 'Loading...' : (
+      <div className="postsContainer">
+        <div className="sortAndSearch">
+          <form onSubmit={handleSearch}>
+            <i className="fas fa-search" onClick={handleSearch}></i>
+            <input type="text" className="searchBar" value={searchText} onChange={(e) => setSearchText(e.target.value)}></input>
+          </form>
 
-      {posts.map((post) => {
-        console.log(post)
-        return (
-          <SmallPost postID={post._id} category={query.get('category')}/>
-        )
-      })}
+          <div className="sortTabOptions">
+            <div className={postsInfo.sortFilter === 'newest' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'newest'})}>Newest</div>
+            <div className={postsInfo.sortFilter === 'oldest' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'oldest'})}>Oldest</div>
+            <div className={postsInfo.sortFilter === 'comments' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'comments'})}>Comments</div>
+            <div className={postsInfo.sortFilter === 'likes' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'likes'})}>Likes</div>
+          </div>
+        </div>
 
-    </div>
+        {paginatedPosts.map((post) => {
+          return (
+            <SmallPost postID={post._id} category={query.get('category')} paginatedPosts={paginatedPosts}/>
+          )
+        })}
+
+        <Pagination data={posts} setPaginatedPosts={setPaginatedPosts} pageLimit={5} dataLimit={2} setLoading={setLoading} category={query.get('category')} />
+
+      </div>
+    )
+    
   )
 }
 
