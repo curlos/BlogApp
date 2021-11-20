@@ -17,17 +17,21 @@ router.get('/post/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  const post = new Post({...req.body})
-  const user = await User.findOne({_id: req.body.author})
-  console.log(req.body)
-  console.log(user)
-  console.log(user.posts)
-  user.posts = [...user.posts, post]
+  try {
+    const post = new Post({...req.body})
+    const user = await User.findOne({_id: req.body.author})
+    console.log(req.body)
+    console.log(user)
+    console.log(user.posts)
+    user.posts = [...user.posts, post]
 
-  const savedPost = await post.save()
-  await user.save()
+    const savedPost = await post.save()
+    await user.save()
 
-  res.json(savedPost)
+    res.json(savedPost)
+  } catch (err) {
+    res.json({error: err})
+  }
 })
 
 router.put('/post/:id', async (req, res) => {

@@ -11,7 +11,6 @@ import './UserProfile.css';
 const UserProfile = () => {
   
   const { id } = useParams()
-  const IMAGES_LOCATION = `${process.env.REACT_APP_SERVER_URL}/images/`
 
   const [user, setUser] = useState({userInfo: {}, posts: [], comments: []})
   const [loading, setLoading] = useState(true)
@@ -76,10 +75,10 @@ const UserProfile = () => {
           <div className="userInfo">
             {user.userInfo.profilePic ? (
               <div>
-                <img src={IMAGES_LOCATION + user.userInfo.profilePic} alt={`${user.userInfo.firstName} ${user.userInfo.lastName} Profile Pic`} className="profilePicImg"/>
+                <img src={process.env.REACT_APP_SERVER_URL + user.userInfo.profilePic} alt={`${user.userInfo.firstName} ${user.userInfo.lastName} Profile Pic`} className="profilePicImg"/>
               </div>
             ) : <div>
-                  <img src={IMAGES_LOCATION + 'default_user.jpeg'} alt={`${user.userInfo.firstName} ${user.userInfo.lastName} Profile Pic`} className="profilePicImg"/>
+                  <img src={process.env.REACT_APP_SERVER_URL + '/images/default_user.jpeg'} alt={`${user.userInfo.firstName} ${user.userInfo.lastName} Profile Pic`} className="profilePicImg"/>
                 </div>}
             <div className="firstAndLastName">{user.userInfo.firstName} {user.userInfo.lastName}</div>
             <div>{user.userInfo.aboutMe}</div>

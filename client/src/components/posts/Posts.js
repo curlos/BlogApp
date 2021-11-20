@@ -31,7 +31,7 @@ const Posts = () => {
       console.log(response.data)
       const newPosts = getFilteredPosts(response.data)
       const newPaginatedPosts = getPaginatedData(newPosts)
-      setPostsInfo({...postsInfo, posts: newPosts, allPosts: newPosts})
+      setPostsInfo({...postsInfo, posts: newPosts, allPosts: response.data})
       setPaginatedPosts(newPaginatedPosts)
       setPageLimit(Math.round(newPosts.length / dataLimit))
       console.log(newPosts.length)
@@ -53,6 +53,18 @@ const Posts = () => {
         return (
           post.categories.includes(requiredCategory)
         )
+      })
+    }
+
+    if (searchText) {
+      filteredPosts = allPosts.filter((post) => {
+        for (let key of Object.keys(post)) {
+          if (typeof post[key] === 'string' && post[key].toLowerCase().includes(searchText.toLowerCase())) {
+            return post
+          }
+        }
+  
+        return null
       })
     }
 
@@ -108,6 +120,8 @@ const Posts = () => {
 
     e.preventDefault()
 
+    console.log(allPosts)
+
     const filteredPosts = allPosts.filter((post) => {
       for (let key of Object.keys(post)) {
         if (typeof post[key] === 'string' && post[key].toLowerCase().includes(searchText.toLowerCase())) {
@@ -132,18 +146,13 @@ const Posts = () => {
     return data.slice(startIndex, endIndex)
   }
 
-  console.log(paginatedPosts)
-  console.log(postsInfo.posts)
-  console.log(updatedSearchText)
-
   
-
   return (
     loading ? 'Loading...' : (
       <div className="postsContainer">
         <div>
           <div className="sortAndSearch">
-            <form onSubmit={handleSearch}>
+            <form onSubmit={handleSearch} className="searchBarForm">
               <i className="fas fa-search" onClick={handleSearch}></i>
               <input type="text" className="searchBar" value={searchText} onChange={(e) => setSearchText(e.target.value)}></input>
             </form>

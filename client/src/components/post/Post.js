@@ -8,7 +8,7 @@ import Comment from '../comment/Comment';
 import CommentContainer from '../comment_container/CommentContainer';
 import Skeleton from '../skeleton/Skeleton';
 import './Post.css';
-// import { sortByMostLikes, sortByMostReplies, sortByNewest, sortByOldest } from './sortHelper';
+import { sortByMostLikes, sortByNewest, sortByOldest } from './sortHelper';
 
 const Post = () => {
 
@@ -22,7 +22,7 @@ const Post = () => {
   const [loading, setLoading] = useState(true)
   const [showAddComment, setShowAddComment] = useState(false)
   const [imageError, setImageError] = useState(false)
-  // const [sortFilter, setSortFilter] = useState('Likes')
+  const [sortFilter, setSortFilter] = useState('Newest')
   
   const { post, author } = postInfo
 
@@ -33,7 +33,7 @@ const Post = () => {
       const authorResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/users/user/${postResponse.data.author}`)
       const newComments = await getComments(postResponse.data.comments)
 
-      setPostInfo({post: postResponse.data, author: authorResponse.data, comments: newComments})
+      setPostInfo({post: postResponse.data, author: authorResponse.data, comments: getSortedComments(newComments)})
       setLoading(false)
     }
 
@@ -53,20 +53,18 @@ const Post = () => {
     
   }
 
-  // const getSortedComments = (comments) => {
-  //   switch (sortFilter) {
-  //     case 'newest':
-  //       return sortByNewest(comments)
-  //     case 'oldest':
-  //       return sortByOldest(comments)
-  //     case 'likes':
-  //       return sortByMostLikes(comments)
-  //     case 'replies':
-  //       return sortByMostReplies(comments)
-  //     default:
-  //       return comments
-  //   }
-  // }
+  const getSortedComments = (comments) => {
+    switch (sortFilter) {
+      case 'Newest':
+        return sortByNewest(comments)
+      case 'Oldest':
+        return sortByOldest(comments)
+      case 'Likes':
+        return sortByMostLikes(comments)
+      default:
+        return comments
+    }
+  }
 
   const handleLikePost = async () => {
 
@@ -109,9 +107,8 @@ const Post = () => {
     }
   }
 
+  console.log(postInfo.comments)
   console.log(post)
-  console.log(process.env.REACT_APP_SERVER_URL + '/images/default_user.jpeg')
-  console.log(process.env.REACT_APP_SERVER_URL + post.headerImage)
 
   return (
     <div>
@@ -150,7 +147,7 @@ const Post = () => {
               </div>  
     
               <div>
-                <span className="commentsIconContainer"><i class="far fa-comments"></i> {post.comments.length}</span>
+                <a href="#postCommentSection" className="commentsIconContainer"><i class="far fa-comments"></i> {post.comments.length}</a>
                 
               </div>
             </div>
@@ -160,13 +157,14 @@ const Post = () => {
               <span onClick={handleDeletePost}><i class="fas fa-trash"></i></span>
           </div>
             ) : null}
+
+          <div className="postContent">
+            {ReactHtmlParser(post.content)}
+          </div>
             
           <div className="postCommentsContainer">
-            <div>
-              {ReactHtmlParser(post.content)}
-            </div>
 
-            <div>Comments ({post.comments.length})</div>
+            <div id="postCommentSection" className="">Comments ({post.comments.length})</div>
 
             {Object.keys(loggedInUser).length < 1 ? (
               <Link to="/login" className="loginToAdd">Log in to add comment</Link>
@@ -174,12 +172,12 @@ const Post = () => {
 
             <span>
               <span className="dropdown">
-              {/* <div className="sortCommentContainer">Sort By: {sortFilter} <i class="fas fa-sort-down"></i></div> */}
+                <div className="sortCommentContainer">Sort By: {sortFilter} <i class="fas fa-sort-down"></i></div>
 
                 <div class="dropdown-content">
-                  <Link to={`/author/${loggedInUser._id}`}>My Profile</Link>
-                  <Link to="/settings">Settings</Link>
-                  
+                  <span onClick={() => setSortFilter('Likes')}>Likes</span>
+                  <span onClick={() => setSortFilter('Newest')}>Newest</span>
+                  <span onClick={() => setSortFilter('Oldest')}>Oldest</span>
                 </div>
               </span>
 

@@ -47,3 +47,7 @@
   background-color: rgb(240, 240, 240);
   border-radius: 10px;
 }
+
+.searchBarForm {
+  width: 100%;
+}

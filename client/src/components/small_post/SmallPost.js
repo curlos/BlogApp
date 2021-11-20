@@ -9,7 +9,6 @@ import './SmallPost.css'
 const SmallPost = ({postID, category, paginatedPosts}) => {
 
   const { loggedInUser, setLoggedInUser } = React.useContext(UserContext)
-  const IMAGES_LOCATION = `${process.env.REACT_APP_SERVER_URL}/images/`
   const [postInfo, setPostInfo] = useState({post: {}, author: {}})
   const [imageError, setImageError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -18,6 +17,7 @@ const SmallPost = ({postID, category, paginatedPosts}) => {
 
   useEffect(() => {
     setImageError(false)
+    setIsLoading(true)
     console.log('rerender small post')
     console.log(imageError)
     
@@ -86,7 +86,7 @@ const SmallPost = ({postID, category, paginatedPosts}) => {
               <div className="additionalInfo">
                 <span>by {author.firstName} {author.lastName}</span>
                 <span>{moment(post.createdAt).format('MMMM Do, YYYY')}</span>
-                <span><i class="far fa-comment"></i>{post.comments.length}</span>
+                <Link to={`/post/${post._id}#postCommentSection`} className="smallPostCommentContent"><i class="far fa-comment"></i>{post.comments.length}</Link>
               </div>
             </div>
           </Link>

@@ -30,6 +30,10 @@ img {
   
 }
 
+.postContent img {
+  height: 100%;
+}
+
 .authorAndDate {
   display: flex;
   align-items: center;

@@ -11,7 +11,7 @@ const PostForm = () => {
   const { loggedInUser } = React.useContext(UserContext)
   const history = useHistory()
   const { id } = useParams()
-  const IMAGES_LOCATION = `${process.env.REACT_APP_SERVER_URL}/images/`
+  const [sendingAPIRequest, setSendingAPIRequest] = useState(false)
 
   const [newPost, setNewPost] = useState({
     title: '',
@@ -65,44 +65,42 @@ const PostForm = () => {
   }
 
   const handlePostArticle = async () => {
+    try {
+      setSendingAPIRequest(true)
 
-    if (!newPost.title) {
-      return
-    }
+      let headerImage = null
 
-    let headerImage = null
-
-    if (newPost.file) {
-      try {
-        const response = await postImage(newPost.file)
-        headerImage = response.imagePath
-
-        console.log(headerImage)
-      } catch (err) {
-        console.log(err)
-        return
+      if (newPost.file) {
+        try {
+          const response = await postImage(newPost.file)
+          headerImage = response.imagePath
+        } catch (err) {
+          setSendingAPIRequest(false)
+          console.log(err)
+          return
+        }
       }
+      
+      const body = {
+        title: newPost.title,
+        author: newPost.author,
+        categories: newPost.selectedCategories,
+        content: newPost.editorContent,
+        headerImage: headerImage,
+        comments: []
+      }
+      
+
+      console.log(body)
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/posts`, body)
+      console.log(response.data)
+
+      setSendingAPIRequest(false)
+      // history.push('/')
+    } catch (err) {
+      console.log(err)
+      setSendingAPIRequest(false)
     }
-    
-    const body = {
-      title: newPost.title,
-      author: newPost.author,
-      categories: newPost.selectedCategories,
-      content: newPost.editorContent,
-      headerImage: headerImage,
-      comments: []
-    }
-    
-
-    console.log(body)
-    const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/posts`, body)
-    console.log(response.data)
-
-    history.push('/login')
-  }
-
-  if (Object.keys(loggedInUser).length < 1) {
-    history.push('/login')
   }
 
   const handleEditArticle = async () => {
@@ -142,7 +140,7 @@ const PostForm = () => {
   return (
     <div className="postFormContainer">
       {(newPost.file || newPost.headerImage) && (
-        <img className="writeImg" src={newPost.file ? URL.createObjectURL(newPost.file) : IMAGES_LOCATION + newPost.headerImage } alt="" />
+        <img className="writeImg" src={newPost.file ? URL.createObjectURL(newPost.file) : process.env.REACT_APP_SERVER_URL + newPost.headerImage } alt="" />
       )}
       <div>Title: </div>
       <input onChange={(e) => setNewPost({...newPost, title: e.target.value})} value={newPost.title}></input>
@@ -189,9 +187,9 @@ const PostForm = () => {
       />
 
       {id ? (
-        <button className="editArticleButton" onClick={handleEditArticle}>Update Article</button>
+        <button className={`editArticleButton ${sendingAPIRequest && 'animate-pulse'}`} onClick={handleEditArticle}>Update Article</button>
       ) : (
-        <button className="postArticleButton" onClick={handlePostArticle}>Post Article</button>
+        <button className={`postArticleButton ${sendingAPIRequest && 'animate-pulse'}`} onClick={handlePostArticle}>Post Article</button>
       )}
     </div>
 

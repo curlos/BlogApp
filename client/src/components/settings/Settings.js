@@ -4,13 +4,13 @@ import {
   useHistory
 } from "react-router-dom";
 import UserContext from '../../contexts/UserContext';
+import { postImage } from "../../utils/postImage";
 import './Settings.css';
 
 const Settings = () => {
   
   const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
   const history = useHistory()
-  const IMAGES_LOCATION = `${process.env.REACT_APP_SERVER_URL}/images/`
 
 
   const [firstName, setFirstName] = useState(loggedInUser.firstName)
@@ -38,14 +38,10 @@ const Settings = () => {
     }
 
     if (file) {
-      const data = new FormData()
-      const filename = Date.now() + file.name
-      data.append('name', filename)
-      data.append('file', file)
-      body.profilePic = filename
 
       try {
-        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/upload`, data)
+        const response = await postImage(file)
+        body.profilePic = response.imagePath
 
         console.log(response)
       } catch (err) {
@@ -69,7 +65,7 @@ const Settings = () => {
       <div className="settingsTitle"><h2>Account</h2></div>
 
       {(file || profilePic) && (
-        <img className="profilePicImg" src={file ? URL.createObjectURL(file) : IMAGES_LOCATION + profilePic } alt="" />
+        <img className="profilePicImg" src={file ? URL.createObjectURL(file) : process.env.REACT_APP_SERVER_URL + profilePic } alt="f" />
       )}
 
       <div>Profile Pic: </div>

@@ -42,9 +42,11 @@ export const Pagination = ({ data, setPaginatedPosts, pageLimit, dataLimit, curr
     return new Array(pageLimit).fill().map((_, idx) => start + idx + 1);
   };
 
+  const currentStartNum = ((currentPage * dataLimit - dataLimit) + 1)
+  const currentEndNum = ((currentPage * dataLimit - dataLimit) + dataLimit - 1 === data.length ? data.length : (currentPage * dataLimit - dataLimit) + dataLimit)
   return (
     <div className="pagContainer">
-      <div className="pagResults">Showing <strong>{(currentPage * dataLimit - dataLimit) + 1}</strong> to <strong>{(currentPage * dataLimit - dataLimit) + dataLimit - 1 === data.length ? data.length : (currentPage * dataLimit - dataLimit) + dataLimit}</strong> of <strong>{data.length}</strong> results</div>
+      <div className="pagResults">Showing <strong>{currentStartNum}</strong> to <strong>{currentEndNum}</strong> of <strong>{data.length}</strong> results</div>
       <div className="pagController">
         <div className="pagNum pagPrev" onClick={goToPreviousPage}><i className="fas fa-chevron-left"></i></div>
 

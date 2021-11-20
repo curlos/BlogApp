@@ -1,18 +1,18 @@
-export const sortByNewest = (postsToFilter) => {
-  return postsToFilter.sort((postOne, postTwo) => (postOne.createdAt > postTwo.createdAt ? -1 : 1))
+export const sortByNewest = (objects) => {
+  return objects.sort((objectOne, objectTwo) => (objectOne.createdAt > objectTwo.createdAt ? -1 : 1))
 }
 
-export const sortByOldest = (postsToFilter) => {
-  return postsToFilter.sort((postOne, postTwo) => (postOne.createdAt > postTwo.createdAt ? 1 : -1))
+export const sortByOldest = (objects) => {
+  return objects.sort((objectOne, objectTwo) => (objectOne.createdAt > objectTwo.createdAt ? 1 : -1))
 }
 
-export const sortByMostLikes = (postsToFilter) => {
-  return postsToFilter.sort((postOne, postTwo) => {
-    const postOneTotalLikes = postOne.likes.length - postOne.dislikes.length
-    const postTwoTotalLikes = postTwo.likes.length - postTwo.dislikes.length
+export const sortByMostLikes = (objects) => {
+  return objects.sort((objectOne, objectTwo) => {
+    const objectOneTotalLikes = objectOne.likes.length - objectOne.dislikes.length
+    const objectTwoTotalLikes = objectTwo.likes.length - objectTwo.dislikes.length
 
     return (
-      (postOneTotalLikes > postTwoTotalLikes ? -1 : 1)
+      (objectOneTotalLikes > objectTwoTotalLikes ? -1 : 1)
     )
   })
 }

@@ -38,8 +38,13 @@
   color: rgb(105, 105, 105);
 }
 
-.fa-comment {
+.smallPostContainer .fa-comment {
   margin-right: 5px;
+
+}
+
+.smallPostCommentContent {
+  color: #696969;
 }
 
 .postVotes {
