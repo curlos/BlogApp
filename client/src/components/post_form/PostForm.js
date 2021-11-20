@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import UserContext from '../../contexts/UserContext';
+import { postImage } from '../../utils/postImage'
 import './PostForm.css';
 
 const PostForm = () => {
@@ -68,32 +69,30 @@ const PostForm = () => {
     if (!newPost.title) {
       return
     }
+
+    let headerImage = null
+
+    if (newPost.file) {
+      try {
+        const response = await postImage(newPost.file)
+        headerImage = response.imagePath
+
+        console.log(headerImage)
+      } catch (err) {
+        console.log(err)
+        return
+      }
+    }
     
     const body = {
       title: newPost.title,
       author: newPost.author,
       categories: newPost.selectedCategories,
       content: newPost.editorContent,
+      headerImage: headerImage,
       comments: []
     }
     
-
-    if (newPost.file) {
-      const data = new FormData()
-      const filename = Date.now() + newPost.file.name
-      data.append('name', filename)
-      data.append('file', newPost.file)
-      body.headerImage = filename
-
-      try {
-        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/upload`, data)
-
-        console.log(response)
-      } catch (err) {
-        console.log(err)
-        return
-      }
-    }
 
     console.log(body)
     const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/posts`, body)

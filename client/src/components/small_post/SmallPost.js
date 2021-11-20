@@ -74,7 +74,7 @@ const SmallPost = ({postID, category, paginatedPosts}) => {
           <Link to={`/post/${post._id}`} className="linkPostContainer">
             {post.headerImage && !imageError ? (
               <div className="imageContainer">
-                <img src={IMAGES_LOCATION + post.headerImage} alt={post.title} onError={() => setImageError(true)}/>
+                <img src={process.env.REACT_APP_SERVER_URL + post.headerImage} alt={post.title} onError={() => setImageError(true)}/>
               </div>
             ) : null}
     

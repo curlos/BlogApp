@@ -16,7 +16,6 @@ const Post = () => {
   const history = useHistory()
   const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
   const SERVER_URL = `${process.env.REACT_APP_SERVER_URL}/posts`
-  const IMAGES_LOCATION = `${process.env.REACT_APP_SERVER_URL}/images/`
 
   const [postInfo, setPostInfo] = useState({post: {}, author: {}, comments: []})
   const [comments, setComments] = useState([])
@@ -110,6 +109,9 @@ const Post = () => {
     }
   }
 
+  console.log(post)
+  console.log(process.env.REACT_APP_SERVER_URL + '/images/default_user.jpeg')
+  console.log(process.env.REACT_APP_SERVER_URL + post.headerImage)
 
   return (
     <div>
@@ -118,7 +120,7 @@ const Post = () => {
       
           {post.headerImage && !imageError ? (
               <div className="headerImage">
-                <img src={IMAGES_LOCATION + post.headerImage} alt={post.title} onError={() => setImageError(true)}/>
+                <img src={process.env.REACT_APP_SERVER_URL + post.headerImage} alt={post.title} onError={() => setImageError(true)}/>
               </div>
             ) : null}
     
@@ -130,8 +132,8 @@ const Post = () => {
               <div className="authorAndDate">
                 <Link to={`/author/${author._id}`}>
                   {author.profilePic ? (
-                    <img src={IMAGES_LOCATION + author.profilePic} alt={`${author.firstName} ${author.lastName} Profile Pic`} className="profilePicImageSmall"/>
-                  ) : <img src={IMAGES_LOCATION + 'default_user.jpeg'} alt={`${author.firstName} ${author.lastName} Profile Pic`} className="profilePicImageSmall"/>}
+                    <img src={process.env.REACT_APP_SERVER_URL + author.profilePic} alt={`${author.firstName} ${author.lastName}`} className="profilePicImageSmall"/>
+                  ) : <img src={process.env.REACT_APP_SERVER_URL + '/images/default_user.jpeg'} alt={`${author.firstName} ${author.lastName} Profile Pic`} className="profilePicImageSmall"/>}
                 </Link>
 
                 <Link to={`/author/${author._id}`}>

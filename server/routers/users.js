@@ -35,7 +35,7 @@ router.post("/register", async (req, res, next) => {
     const user = new User({
       email: req.body.email,
       password: hashedPassword,
-      profilePic: 'default_user.jpeg',
+      profilePic: '/images/default_user.jpeg',
       aboutMe: '',
       likes: [],
       dislikes: [],

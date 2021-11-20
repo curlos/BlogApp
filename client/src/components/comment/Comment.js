@@ -12,7 +12,6 @@ const Comment = ({ post, commentID, replyComment }) => {
 
   const history = useHistory()
   const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
-  const IMAGES_LOCATION = `${process.env.REACT_APP_SERVER_URL}/images/`
 
   const [commentInfo, setCommentInfo] = useState({comment: {}, author: {}})
   const [replies, setReplies] = useState({})
@@ -70,8 +69,8 @@ const Comment = ({ post, commentID, replyComment }) => {
         <div className={`commentContainer ${replyComment ? 'replyComment' : ''}`}>
           <div className="topCommentInfo">
             {author.profilePic ? (
-              <img src={IMAGES_LOCATION + author.profilePic} alt={`${author.firstName} ${author.lastName} Profile Pic`} className="profilePicImageSmall"/>
-            ) : <img src={IMAGES_LOCATION + 'default_user.jpeg'} alt={`${author.firstName} ${author.lastName} Profile Pic`} className="profilePicImageSmall"/>}
+              <img src={process.env.REACT_APP_SERVER_URL + author.profilePic} alt={`${author.firstName} ${author.lastName} Profile Pic`} className="profilePicImageSmall"/>
+            ) : <img src={process.env.REACT_APP_SERVER_URL + 'default_user.jpeg'} alt={`${author.firstName} ${author.lastName} Profile Pic`} className="profilePicImageSmall"/>}
             <Link to={`/author/${author._id}`} className="commentAuthor">{author.firstName} {author.lastName}</Link>
             <span className="fromNowTime">{moment(comment.createdAt).fromNow()}</span>
             <span className="commentLikes">{comment.likes.length - comment.dislikes.length} {(comment.likes.length - comment.dislikes.length) === 1 || (comment.likes.length - comment.dislikes.length) === -1 ? 'like' : 'likes'}</span>
