@@ -1,41 +1,73 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useParams, useHistory } from 'react-router-dom'
-import ReactHtmlParser from 'react-html-parser';
-import moment from 'moment'
-import './Post.css'
 import axios from 'axios';
-import Comment from '../comment/Comment'
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import ReactHtmlParser from 'react-html-parser';
+import { Link, useHistory, useParams } from 'react-router-dom';
+import UserContext from '../../contexts/UserContext';
+import Comment from '../comment/Comment';
 import CommentContainer from '../comment_container/CommentContainer';
-import UserContext from '../../contexts/UserContext'
+import Skeleton from '../skeleton/Skeleton';
+import './Post.css';
+// import { sortByMostLikes, sortByMostReplies, sortByNewest, sortByOldest } from './sortHelper';
 
 const Post = () => {
 
   const { id } = useParams()
   const history = useHistory()
   const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
-  const SERVER_URL = 'http://localhost:8888/posts'
-  const IMAGES_LOCATION = 'http://localhost:8888/images/'
+  const SERVER_URL = `${process.env.REACT_APP_SERVER_URL}/posts`
+  const IMAGES_LOCATION = `${process.env.REACT_APP_SERVER_URL}/images/`
 
-  const [postInfo, setPostInfo] = useState({post: {}, author: {}})
+  const [postInfo, setPostInfo] = useState({post: {}, author: {}, comments: []})
   const [comments, setComments] = useState([])
   const [loading, setLoading] = useState(true)
   const [showAddComment, setShowAddComment] = useState(false)
   const [imageError, setImageError] = useState(false)
-
-  const { post, author} = postInfo
+  // const [sortFilter, setSortFilter] = useState('Likes')
+  
+  const { post, author } = postInfo
 
   useEffect(() => {
     const fetchFromAPI = async () => {
       
       const postResponse = await axios.get(SERVER_URL + `/post/${id}`)
-      const authorResponse = await axios.get(`http://localhost:8888/users/user/${postResponse.data.author}`)
+      const authorResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/users/user/${postResponse.data.author}`)
+      const newComments = await getComments(postResponse.data.comments)
 
-      setPostInfo({post: postResponse.data, author: authorResponse.data})
+      setPostInfo({post: postResponse.data, author: authorResponse.data, comments: newComments})
       setLoading(false)
     }
 
     fetchFromAPI()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [comments])
+
+  const getComments = async (commentIDs) => {
+    const comments = []
+    for (let commentID of commentIDs) {
+      const commentResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/comment/${commentID}`)
+
+      comments.push(commentResponse.data)
+    }
+
+    return comments
+    
+  }
+
+  // const getSortedComments = (comments) => {
+  //   switch (sortFilter) {
+  //     case 'newest':
+  //       return sortByNewest(comments)
+  //     case 'oldest':
+  //       return sortByOldest(comments)
+  //     case 'likes':
+  //       return sortByMostLikes(comments)
+  //     case 'replies':
+  //       return sortByMostReplies(comments)
+  //     default:
+  //       return comments
+  //   }
+  // }
 
   const handleLikePost = async () => {
 
@@ -45,7 +77,7 @@ const Post = () => {
     }
 
     const body = { userID: loggedInUser._id}
-    const response = await axios.put(`http://localhost:8888/posts/post/like/${post._id}`, body)
+    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/posts/post/like/${post._id}`, body)
 
     setPostInfo({...postInfo, post: response.data.updatedPost})
     setLoggedInUser(response.data.updatedUser)
@@ -60,7 +92,7 @@ const Post = () => {
     }
 
     const body = { userID: loggedInUser._id}
-    const response = await axios.put(`http://localhost:8888/posts/post/dislike/${post._id}`, body)
+    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/posts/post/dislike/${post._id}`, body)
 
     setPostInfo({...postInfo, post: response.data.updatedPost})
     setLoggedInUser(response.data.updatedUser)
@@ -78,11 +110,10 @@ const Post = () => {
     }
   }
 
-  console.log(post)
 
   return (
     <div>
-      {loading ? 'Loading...' : (
+      {loading ? <Skeleton type="fullPost" /> : (
         <div className="postContainer">
       
           {post.headerImage && !imageError ? (
@@ -138,6 +169,19 @@ const Post = () => {
             {Object.keys(loggedInUser).length < 1 ? (
               <Link to="/login" className="loginToAdd">Log in to add comment</Link>
             ) : <CommentContainer post={postInfo} setComments={setComments} showAddComment={showAddComment} setShowAddComment={setShowAddComment}/>}
+
+            <span>
+              <span className="dropdown">
+              {/* <div className="sortCommentContainer">Sort By: {sortFilter} <i class="fas fa-sort-down"></i></div> */}
+
+                <div class="dropdown-content">
+                  <Link to={`/author/${loggedInUser._id}`}>My Profile</Link>
+                  <Link to="/settings">Settings</Link>
+                  
+                </div>
+              </span>
+
+              </span>
 
     
             <div href='#comments' className="commentsContainer">

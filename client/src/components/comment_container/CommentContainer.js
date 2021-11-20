@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import './CommentContainer.css'
+import React, { useRef, useState } from 'react'
 import UserContext from '../../contexts/UserContext'
+import './CommentContainer.css'
 
 const CommentContainer = ({ post, parentComment, setComments, showAddComment, setShowAddComment, showReply, setShowReply, setReplies }) => {
-  const SERVER_URL = 'http://localhost:8888/comments/comment'
-  const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
-  const parentAuthor = parentComment && `@${parentComment.author.firstName} ${parentComment.author.lastName} `
+  const SERVER_URL = `${process.env.REACT_APP_SERVER_URL}/comments/comment`
+  const { loggedInUser } = React.useContext(UserContext)
 
+  const parentAuthor = parentComment && `@${parentComment.author.firstName} ${parentComment.author.lastName} `
   const [commentText, setCommentText] = useState(parentComment ? parentAuthor : '')
+  const textareaElem = useRef(null)
 
   const handleChangeReply = (e) => {
     if (e.target.value.length >= parentAuthor.length) {
@@ -18,6 +19,13 @@ const CommentContainer = ({ post, parentComment, setComments, showAddComment, se
 
   const handleChangeParent = (e) => {
     setCommentText(e.target.value)
+  }
+
+  const handleShowFullTextArea = () => {
+    console.log(textareaElem)
+    
+    setShowAddComment(true)
+    textareaElem.current.focus()
   }
 
 
@@ -74,7 +82,7 @@ const CommentContainer = ({ post, parentComment, setComments, showAddComment, se
       return (
         showReply ?
           <div className="newCommentContainer">
-            <textarea value={commentText} onChange={handleChangeReply}></textarea>
+            <textarea value={commentText} onChange={handleChangeReply} ref={textareaElem}></textarea>
             <div className="newCommentActionButtons">
               <button className="cancel" onClick={() => {setShowReply(false) && setCommentText(parentAuthor)}}>Cancel</button>
               {getAddCommentButton()}
@@ -84,13 +92,13 @@ const CommentContainer = ({ post, parentComment, setComments, showAddComment, se
     } else {
       return (
         showAddComment ? <div className="newCommentContainer">
-          <textarea placeholder="Add a comment..." value={commentText} onChange={handleChangeParent}></textarea>
+          <textarea placeholder="Add a comment..." value={commentText} onChange={handleChangeParent} ref={textareaElem}></textarea>
           <div className="newCommentActionButtons">
             <button className="cancel" onClick={() => {setShowAddComment(false) && setCommentText('')}}>Cancel</button>
             {getAddCommentButton()}
           </div>
         </div> : (
-          <textarea placeholder="Add a comment..." value={commentText} onFocus={() => setShowAddComment(true)} className="miniTextArea"></textarea>
+          <textarea placeholder="Add a comment..." value={commentText} onClick={handleShowFullTextArea} className="miniTextArea" autofocus></textarea>
         )
       )
     }

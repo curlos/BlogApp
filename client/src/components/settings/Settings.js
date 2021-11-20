@@ -1,20 +1,16 @@
-import React, { useState, useEffect } from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
   useHistory
 } from "react-router-dom";
-import './Settings.css'
-import UserContext from '../../contexts/UserContext'
-import axios from "axios";
+import UserContext from '../../contexts/UserContext';
+import './Settings.css';
 
 const Settings = () => {
   
   const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
   const history = useHistory()
-  const IMAGES_LOCATION = 'http://localhost:8888/images/'
+  const IMAGES_LOCATION = `${process.env.REACT_APP_SERVER_URL}/images/`
 
 
   const [firstName, setFirstName] = useState(loggedInUser.firstName)
@@ -22,9 +18,10 @@ const Settings = () => {
   const [email, setEmail] = useState(loggedInUser.email)
   const [password, setPassword] = useState(loggedInUser.password)
   const [aboutMe, setAboutMe] = useState(loggedInUser.aboutMe)
+  // eslint-disable-next-line no-unused-vars
   const [profilePic, setProfilePic] = useState(loggedInUser.profilePic || null)
   const [file, setFile] = useState(null)
-  const [loading, setLoading] = useState(true)
+  // const [loading, setLoading] = useState(true)
 
   if (Object.keys(loggedInUser).length < 1) {
     history.push('/')
@@ -48,7 +45,7 @@ const Settings = () => {
       body.profilePic = filename
 
       try {
-        const response = await axios.post('http://localhost:8888/upload', data)
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/upload`, data)
 
         console.log(response)
       } catch (err) {
@@ -57,7 +54,7 @@ const Settings = () => {
       }
     }
 
-    const response = await axios.put(`http://localhost:8888/users/user/update/${loggedInUser._id}`, body)
+    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/users/user/update/${loggedInUser._id}`, body)
 
     console.log(response.data)
     setLoggedInUser(response.data)

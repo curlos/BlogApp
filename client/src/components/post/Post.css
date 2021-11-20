@@ -107,4 +107,15 @@ img {
 
 .postCommentsContainer {
   width: 100%;
+  margin: 10px;
+}
+
+.sortCommentContainer {
+  color: #3075C1;
+}
+
+.sortCommentContainer, .fa-sort-down {
+  display: inline-flex;
+  justify-content: center;
+  margin-left: 10px;
 }

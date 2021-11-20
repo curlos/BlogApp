@@ -1,21 +1,17 @@
-import React, { useState, useEffect } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
   useParams
 } from "react-router-dom";
-import './UserProfile.css'
-import axios from "axios";
-import SmallPost from '../small_post/SmallPost'
-import SamllComment from '../small_comment/SmallComment'
 import Skeleton from "../skeleton/Skeleton";
+import SamllComment from '../small_comment/SmallComment';
+import SmallPost from '../small_post/SmallPost';
+import './UserProfile.css';
 
 const UserProfile = () => {
   
   const { id } = useParams()
-  const IMAGES_LOCATION = 'http://localhost:8888/images/'
+  const IMAGES_LOCATION = `${process.env.REACT_APP_SERVER_URL}/images/`
 
   const [user, setUser] = useState({userInfo: {}, posts: [], comments: []})
   const [loading, setLoading] = useState(true)
@@ -23,7 +19,7 @@ const UserProfile = () => {
   
   useEffect(() => {
     const fetchFromAPI = async () => {
-      const response = await axios.get(`http://localhost:8888/users/user/${id}`)
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/users/user/${id}`)
       const userPosts = await getAllUserPosts(response.data.posts)
       const userComments = await getAllUserComments(response.data.comments)
       const userCommentsWithFullPost = await getCommentsWithFullPost(userComments)
@@ -33,13 +29,14 @@ const UserProfile = () => {
     }
 
     fetchFromAPI()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const getAllUserPosts = async (postIDs) => {
     const allUserPosts = []
 
     for (let postID of postIDs) {
-      const response = await axios.get(`http://localhost:8888/posts/post/${postID}`)
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/posts/post/${postID}`)
       allUserPosts.push(response.data)
     }
 
@@ -50,7 +47,7 @@ const UserProfile = () => {
     const allUserComments = []
 
     for (let commentID of commentIDs) {
-      const response = await axios.get(`http://localhost:8888/comments/comment/${commentID}`)
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/comment/${commentID}`)
       allUserComments.push(response.data)
     }
 
@@ -61,7 +58,7 @@ const UserProfile = () => {
     const newComments = []
     for (let comment of comments) {
 
-      const response = await axios.get(`http://localhost:8888/posts/post/${comment.post}`)
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/posts/post/${comment.post}`)
       newComments.push({...comment, post: response.data})
     }
 

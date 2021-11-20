@@ -1,25 +1,21 @@
 import React, { useState } from "react";
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
+  BrowserRouter as Router, Route, Switch
 } from "react-router-dom";
-import Header from './components/header/Header'
-import Posts from './components/posts/Posts'
-import Post from './components/post/Post'
-import PostForm from './components/post_form/PostForm'
-import Login from './components/login/Login'
-import Register from './components/register/Register'
-import UserContext from './contexts/UserContext';
-import UserProfile from './components/user_profile/UserProfile'
-import Settings from './components/settings/Settings'
 import './App.css';
+import Header from './components/header/Header';
+import Login from './components/login/Login';
+import Post from './components/post/Post';
+import Posts from './components/posts/Posts';
+import PostForm from './components/post_form/PostForm';
+import Register from './components/register/Register';
+import Settings from './components/settings/Settings';
+import UserProfile from './components/user_profile/UserProfile';
+import UserContext from './contexts/UserContext';
 
 function App() {
 
   const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem('user')) || {})
-  const [filters, setFilters] = useState({})
 
   console.log(loggedInUser)
 

@@ -1,19 +1,17 @@
+import axios from 'axios';
+import { passwordStrength } from 'check-password-strength';
+import * as EmailValidator from 'email-validator';
 import React, { useState } from "react";
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
   Link,
   useHistory
 } from "react-router-dom";
-import * as EmailValidator from 'email-validator';
-import { passwordStrength } from 'check-password-strength'
-import UserContext from '../../contexts/UserContext'
-import './Register.css'
-import axios from 'axios'
+import UserContext from '../../contexts/UserContext';
+import './Register.css';
 
 const Register = () => {
 
+  // eslint-disable-next-line no-unused-vars
   const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
   const history = useHistory()
 
@@ -134,7 +132,7 @@ const Register = () => {
       password: password.value,
     }
 
-    const response = await axios.post('http://localhost:8888/users/register', body)
+    const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/users/register`, body)
     
     console.log(response.data)
 

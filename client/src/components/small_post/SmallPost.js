@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import UserContext from '../../contexts/UserContext'
+import Skeleton from '../skeleton/Skeleton'
 import './SmallPost.css'
 
-const SmallPost = ({postID, category}) => {
+const SmallPost = ({postID, category, paginatedPosts}) => {
 
   const { loggedInUser, setLoggedInUser } = React.useContext(UserContext)
-  const IMAGES_LOCATION = 'http://localhost:8888/images/'
+  const IMAGES_LOCATION = `${process.env.REACT_APP_SERVER_URL}/images/`
   const [postInfo, setPostInfo] = useState({post: {}, author: {}})
   const [imageError, setImageError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -17,17 +18,20 @@ const SmallPost = ({postID, category}) => {
 
   useEffect(() => {
     setImageError(false)
+    console.log('rerender small post')
+    console.log(imageError)
     
     const fetchFromAPI = async () => {
 
-      const postResponse = await axios.get(`http://localhost:8888/posts/post/${postID}`)
-      const authorResponse = await axios.get(`http://localhost:8888/users/user/${postResponse.data.author}`)
+      const postResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/posts/post/${postID}`)
+      const authorResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/users/user/${postResponse.data.author}`)
       setPostInfo({post: postResponse.data, author: authorResponse.data})
       setIsLoading(false)
     }
 
     fetchFromAPI()
-  }, [postID, category])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [postID, category, paginatedPosts])
 
   const handleLikePost = async () => {
 
@@ -36,7 +40,7 @@ const SmallPost = ({postID, category}) => {
     }
 
     const body = { userID: loggedInUser._id}
-    const response = await axios.put(`http://localhost:8888/posts/post/like/${post._id}`, body)
+    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/posts/post/like/${post._id}`, body)
 
     setPostInfo({...postInfo, post: response.data.updatedPost})
     setLoggedInUser(response.data.updatedUser)
@@ -50,7 +54,7 @@ const SmallPost = ({postID, category}) => {
     }
 
     const body = { userID: loggedInUser._id}
-    const response = await axios.put(`http://localhost:8888/posts/post/dislike/${post._id}`, body)
+    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/posts/post/dislike/${post._id}`, body)
 
     setPostInfo({...postInfo, post: response.data.updatedPost})
     setLoggedInUser(response.data.updatedUser)
@@ -59,7 +63,7 @@ const SmallPost = ({postID, category}) => {
   return (
 
     <div>
-      {isLoading ? 'Loading...' : (
+      {isLoading ? <Skeleton type="smallPost" /> : (
         <div className="smallPostContainer">
           <div className="postVotes">
             <div><i className={`fas fa-thumbs-up ${Object.keys(loggedInUser).length > 0 && loggedInUser.likedPosts && loggedInUser.likedPosts.includes(post._id) ? 'liked' : null}`} onClick={handleLikePost}></i></div>

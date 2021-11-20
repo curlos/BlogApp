@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react';
-import axios from 'axios'
-import { useParams, useHistory } from 'react-router-dom'
-import UserContext from '../../contexts/UserContext'
-import './PostForm.css'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import UserContext from '../../contexts/UserContext';
+import './PostForm.css';
 
 const PostForm = () => {
 
   const { loggedInUser } = React.useContext(UserContext)
   const history = useHistory()
   const { id } = useParams()
-  const IMAGES_LOCATION = 'http://localhost:8888/images/'
+  const IMAGES_LOCATION = `${process.env.REACT_APP_SERVER_URL}/images/`
 
   const [newPost, setNewPost] = useState({
     title: '',
@@ -25,7 +25,7 @@ const PostForm = () => {
 
   useEffect(() => {
     const fetchFromAPI = async () => {
-      const response = await axios.get(`http://localhost:8888/posts/post/${id}`)
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/posts/post/${id}`)
       console.log(response.data)
       setNewPost({
         ...newPost,
@@ -40,6 +40,7 @@ const PostForm = () => {
     if (id) {
       fetchFromAPI()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleEditorChange = (newValue, editor) => {
@@ -85,7 +86,7 @@ const PostForm = () => {
       body.headerImage = filename
 
       try {
-        const response = await axios.post('http://localhost:8888/upload', data)
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/upload`, data)
 
         console.log(response)
       } catch (err) {
@@ -95,7 +96,7 @@ const PostForm = () => {
     }
 
     console.log(body)
-    const response = await axios.post('http://localhost:8888/posts', body)
+    const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/posts`, body)
     console.log(response.data)
 
     history.push('/login')
@@ -122,7 +123,7 @@ const PostForm = () => {
       body.headerImage = filename
 
       try {
-        const response = await axios.post('http://localhost:8888/upload', data)
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/upload`, data)
 
         console.log(response)
       } catch (err) {
@@ -131,7 +132,8 @@ const PostForm = () => {
       }
     }
     
-    const response = await axios.put(`http://localhost:8888/posts/post/${id}`, body)
+    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/posts/post/${id}`, body)
+    console.log(response)
 
     history.push('/')
   }
@@ -177,6 +179,7 @@ const PostForm = () => {
           ],
           menubar: 'file edit view insert format tools table tc help',
           toolbar:
+            // eslint-disable-next-line no-multi-str
             'undo redo | formatselect | bold italic | \
             alignleft aligncenter alignright | \
             bullist numlist outdent indent | help'

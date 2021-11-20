@@ -1,34 +1,46 @@
-import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
-import SmallPost from '../small_post/SmallPost'
-import { Pagination } from '../pagination/Pagination'
 import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import { Pagination } from '../pagination/Pagination'
+import SmallPost from '../small_post/SmallPost'
 import './Posts.css'
 
-const SERVER_URL = 'http://localhost:8888/posts'
+const SERVER_URL = `${process.env.REACT_APP_SERVER_URL}/posts`
 
 const Posts = () => {
 
   const query = new URLSearchParams(useLocation().search)
-  const sortFilters = ['new', 'oldest', 'comments', 'likes']
-  const [postsInfo, setPostsInfo] = useState({posts: [], allPosts: [], sortFilter: 'likes'})
+  // const sortFilters = ['new', 'oldest', 'comments', 'likes']
+  const [postsInfo, setPostsInfo] = useState({posts: [], allPosts: [], sortFilter: 'likes', search: ''})
   const { posts, allPosts, sortFilter } = postsInfo
   const [searchText, setSearchText] = useState('')
+  // eslint-disable-next-line no-unused-vars
+  const [updatedSearchText, setUpdatedSearchText] = useState('')
   const [paginatedPosts, setPaginatedPosts] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  // eslint-disable-next-line no-unused-vars
+  const [dataLimit, setDataLimit] = useState(2)
+  const [pageLimit, setPageLimit] = useState(5)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    console.log('rerender')
     const fetchFromAPI = async () => {
       console.log('getting new posts')
       const response = await axios.get(SERVER_URL)
       console.log(response.data)
       const newPosts = getFilteredPosts(response.data)
+      const newPaginatedPosts = getPaginatedData(newPosts)
       setPostsInfo({...postsInfo, posts: newPosts, allPosts: newPosts})
+      setPaginatedPosts(newPaginatedPosts)
+      setPageLimit(Math.round(newPosts.length / dataLimit))
+      console.log(newPosts.length)
       setLoading(false)
     }
 
     fetchFromAPI()
-  }, [query.get('category'), postsInfo.sortFilter, paginatedPosts])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query.get('category'), postsInfo.sortFilter])
 
   const getFilteredPosts = (allPosts) => {
 
@@ -106,38 +118,54 @@ const Posts = () => {
       return null
     })
 
-    setPostsInfo({...postsInfo, posts: []})
-    setPostsInfo({...postsInfo, posts: filteredPosts})
+    setPostsInfo({...postsInfo, posts: filteredPosts, search: searchText})
+    setPaginatedPosts(getPaginatedData(filteredPosts))
+    setPageLimit(Math.round(filteredPosts.length / dataLimit))
+    console.log(filteredPosts)
+  }
+
+  const getPaginatedData = (data) => {
+    const startIndex = currentPage * dataLimit - dataLimit;
+    const endIndex = startIndex + dataLimit;
+    console.log(data.slice(startIndex, endIndex))
+    console.log('updating posts')
+    return data.slice(startIndex, endIndex)
   }
 
   console.log(paginatedPosts)
+  console.log(postsInfo.posts)
+  console.log(updatedSearchText)
 
   
 
   return (
     loading ? 'Loading...' : (
       <div className="postsContainer">
-        <div className="sortAndSearch">
-          <form onSubmit={handleSearch}>
-            <i className="fas fa-search" onClick={handleSearch}></i>
-            <input type="text" className="searchBar" value={searchText} onChange={(e) => setSearchText(e.target.value)}></input>
-          </form>
+        <div>
+          <div className="sortAndSearch">
+            <form onSubmit={handleSearch}>
+              <i className="fas fa-search" onClick={handleSearch}></i>
+              <input type="text" className="searchBar" value={searchText} onChange={(e) => setSearchText(e.target.value)}></input>
+            </form>
 
-          <div className="sortTabOptions">
-            <div className={postsInfo.sortFilter === 'newest' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'newest'})}>Newest</div>
-            <div className={postsInfo.sortFilter === 'oldest' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'oldest'})}>Oldest</div>
-            <div className={postsInfo.sortFilter === 'comments' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'comments'})}>Comments</div>
-            <div className={postsInfo.sortFilter === 'likes' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'likes'})}>Likes</div>
+            <div className="sortTabOptions">
+              <div className={postsInfo.sortFilter === 'newest' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'newest'})}>Newest</div>
+              <div className={postsInfo.sortFilter === 'oldest' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'oldest'})}>Oldest</div>
+              <div className={postsInfo.sortFilter === 'comments' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'comments'})}>Comments</div>
+              <div className={postsInfo.sortFilter === 'likes' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'likes'})}>Likes</div>
+            </div>
           </div>
+
+          {paginatedPosts.map((post) => {
+            return (
+              <SmallPost postID={post._id} category={query.get('category')} paginatedPosts={paginatedPosts}/>
+            )
+          })}
         </div>
 
-        {paginatedPosts.map((post) => {
-          return (
-            <SmallPost postID={post._id} category={query.get('category')} paginatedPosts={paginatedPosts}/>
-          )
-        })}
-
-        <Pagination data={posts} setPaginatedPosts={setPaginatedPosts} pageLimit={5} dataLimit={2} setLoading={setLoading} category={query.get('category')} />
+        <div>
+          <Pagination data={posts} setPaginatedPosts={setPaginatedPosts} currentPage={currentPage} setCurrentPage={setCurrentPage} pageLimit={pageLimit} dataLimit={dataLimit} setLoading={setLoading} category={query.get('category')} />
+        </div>
 
       </div>
     )

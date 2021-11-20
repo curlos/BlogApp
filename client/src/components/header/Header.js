@@ -1,14 +1,11 @@
+import axios from "axios";
 import React from "react";
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
   Link,
   useHistory
 } from "react-router-dom";
-import './Header.css'
-import UserContext from '../../contexts/UserContext'
-import axios from "axios";
+import UserContext from '../../contexts/UserContext';
+import './Header.css';
 
 const Header = () => {
   
@@ -19,7 +16,7 @@ const Header = () => {
   console.log(loggedInUser)
 
   const handleLogout = async () => {
-    await axios.get('http://localhost:8888/users/logout')
+    await axios.get(`${process.env.REACT_APP_SERVER_URL}/users/logout`)
     setLoggedInUser({})
     localStorage.setItem('user', null)
     history.push('/')
@@ -39,7 +36,7 @@ const Header = () => {
                   <div class="dropdown-content">
                     <Link to={`/author/${loggedInUser._id}`}>My Profile</Link>
                     <Link to="/settings">Settings</Link>
-                    <a onClick={handleLogout}>Log Out</a>
+                    <a href="/" onClick={handleLogout}>Log Out</a>
                   </div>
                 </span>
 

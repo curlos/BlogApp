@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import './pagination.css'
 
-export const Pagination = ({ data, setPaginatedPosts, pageLimit, dataLimit, category }) => {
-  const [pages] = useState(Math.round(data.length / dataLimit))
-  const [currentPage, setCurrentPage] = useState(1)
+export const Pagination = ({ data, setPaginatedPosts, pageLimit, dataLimit, currentPage, setCurrentPage, category }) => {
 
   useEffect(() => {
     setPaginatedData(currentPage)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, category])
 
   const goToNextPage = () => {

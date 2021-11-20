@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
-import moment from 'moment'
-import './Comment.css'
 import axios from 'axios';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import UserContext from '../../contexts/UserContext';
 import CommentContainer from '../comment_container/CommentContainer';
-import UserContext from '../../contexts/UserContext'
 import Skeleton from '../skeleton/Skeleton';
+import './Comment.css';
 
 
 const Comment = ({ post, commentID, replyComment }) => {
 
   const history = useHistory()
   const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
-  const SERVER_URL = 'http://localhost:8888/posts'
-  const IMAGES_LOCATION = 'http://localhost:8888/images/'
+  const IMAGES_LOCATION = `${process.env.REACT_APP_SERVER_URL}/images/`
 
   const [commentInfo, setCommentInfo] = useState({comment: {}, author: {}})
   const [replies, setReplies] = useState({})
@@ -23,13 +22,14 @@ const Comment = ({ post, commentID, replyComment }) => {
 
   useEffect(() => {
     const fetchFromAPI = async () => {
-      const commentResponse = await axios.get(`http://localhost:8888/comments/comment/${commentID}`)
-      const authorResponse = await axios.get(`http://localhost:8888/users/user/${commentResponse.data.author}`)
+      const commentResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/comment/${commentID}`)
+      const authorResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/users/user/${commentResponse.data.author}`)
       setCommentInfo({comment: commentResponse.data, author: authorResponse.data})
       setLoading(false)
     }
 
     fetchFromAPI()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [replies])
 
   const handleLikeComment = async () => {
@@ -40,7 +40,7 @@ const Comment = ({ post, commentID, replyComment }) => {
     }
 
     const body = { userID: loggedInUser._id}
-    const response = await axios.put(`http://localhost:8888/comments/comment/like/${comment._id}`, body)
+    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/comments/comment/like/${comment._id}`, body)
 
     setCommentInfo({...commentInfo, comment: response.data.updatedComment})
     setLoggedInUser(response.data.updatedUser)
@@ -55,7 +55,7 @@ const Comment = ({ post, commentID, replyComment }) => {
     }
 
     const body = { userID: loggedInUser._id}
-    const response = await axios.put(`http://localhost:8888/comments/comment/dislike/${comment._id}`, body)
+    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/comments/comment/dislike/${comment._id}`, body)
 
     setCommentInfo({...commentInfo, comment: response.data.updatedComment})
     setLoggedInUser(response.data.updatedUser)

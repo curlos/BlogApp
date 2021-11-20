@@ -1,22 +1,18 @@
+import axios from "axios";
+import * as EmailValidator from 'email-validator';
 import React, { useState } from "react";
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
   Link,
   useHistory
 } from "react-router-dom";
-import * as EmailValidator from 'email-validator';
-import { passwordStrength } from 'check-password-strength'
-import UserContext from '../../contexts/UserContext'
-import './Login.css'
-import axios from "axios";
+import UserContext from '../../contexts/UserContext';
+import './Login.css';
 
 const Login = () => {
 
   const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
   const history = useHistory()
-  const SERVER_URL = 'http://localhost:8888/users'
+  const SERVER_URL = `${process.env.REACT_APP_SERVER_URL}/users`
 
   const [email, setEmail] = useState({value: '', valid: false})
   const [password, setPassword] = useState({value: '', strength: false})
