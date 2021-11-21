@@ -18,6 +18,8 @@ const Comment = ({ post, commentID, replyComment }) => {
   const [loading, setLoading] = useState(true)
   const [showReply, setShowReply] = useState(false)
   const { comment, author } = commentInfo
+  const [sendingAPIRequest, setSendingAPIRequest] = useState(false)
+  
 
   useEffect(() => {
     const fetchFromAPI = async () => {
@@ -32,32 +34,46 @@ const Comment = ({ post, commentID, replyComment }) => {
   }, [replies])
 
   const handleLikeComment = async () => {
+    try {
+      setSendingAPIRequest(true)
 
-    if (Object.keys(loggedInUser).length === 0) {
-      history.push('/login')
-      return
+      if (Object.keys(loggedInUser).length === 0) {
+        history.push('/login')
+        return
+      }
+
+      const body = { userID: loggedInUser._id}
+      const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/comments/comment/like/${comment._id}`, body)
+
+      setCommentInfo({...commentInfo, comment: response.data.updatedComment})
+      setLoggedInUser(response.data.updatedUser)
+      setSendingAPIRequest(false)
+    } catch (err) {
+      setSendingAPIRequest(false)
     }
-
-    const body = { userID: loggedInUser._id}
-    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/comments/comment/like/${comment._id}`, body)
-
-    setCommentInfo({...commentInfo, comment: response.data.updatedComment})
-    setLoggedInUser(response.data.updatedUser)
 
   }
 
   const handleDislikeComment = async () => {
+    try {
+      setSendingAPIRequest(true)
 
-    if (Object.keys(loggedInUser).length === 0) {
-      history.push('/login')
-      return
+      if (Object.keys(loggedInUser).length === 0) {
+        history.push('/login')
+        return
+      }
+  
+      const body = { userID: loggedInUser._id}
+      const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/comments/comment/dislike/${comment._id}`, body)
+  
+      setCommentInfo({...commentInfo, comment: response.data.updatedComment})
+      setLoggedInUser(response.data.updatedUser)
+      setSendingAPIRequest(false)
+      
+    } catch (err) {
+      console.log(err)
+      setSendingAPIRequest(false)
     }
-
-    const body = { userID: loggedInUser._id}
-    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/comments/comment/dislike/${comment._id}`, body)
-
-    setCommentInfo({...commentInfo, comment: response.data.updatedComment})
-    setLoggedInUser(response.data.updatedUser)
 
   }
 
@@ -82,9 +98,9 @@ const Comment = ({ post, commentID, replyComment }) => {
 
           <div className="commentActions">
             <span>
-              <i className={`fas fa-thumbs-up ${Object.keys(loggedInUser).length > 0 && loggedInUser.likedComments && loggedInUser.likedComments.includes(comment._id) ? 'liked' : null}`} onClick={handleLikeComment}></i>
+              <i className={`fas fa-thumbs-up ${sendingAPIRequest && 'animate-pulse'} ${Object.keys(loggedInUser).length > 0 && loggedInUser.likedComments && loggedInUser.likedComments.includes(comment._id) ? 'liked' : null}`} onClick={handleLikeComment}></i>
               <span className="commentUpvotes">{comment.likes.length - comment.dislikes.length}</span>
-              <i className={`fas fa-thumbs-down ${Object.keys(loggedInUser).length > 0 && loggedInUser.dislikedComments && loggedInUser.dislikedComments.includes(comment._id) ? 'disliked' : null}`} onClick={handleDislikeComment}></i>
+              <i className={`fas fa-thumbs-down ${sendingAPIRequest && 'animate-pulse'} ${Object.keys(loggedInUser).length > 0 && loggedInUser.dislikedComments && loggedInUser.dislikedComments.includes(comment._id) ? 'disliked' : null}`} onClick={handleDislikeComment}></i>
             </span>
             <span>
               <i class="fas fa-reply" onClick={() => setShowReply(true)}></i>

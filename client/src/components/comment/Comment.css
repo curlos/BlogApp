@@ -75,3 +75,16 @@
   object-fit: cover;
   margin-right: 10px;
 }
+
+@media only screen and (max-width: 600px) {
+  .topCommentInfo {
+    display: flex;
+  }
+  
+  .replyComment {
+    border-bottom: 2px solid rgb(185, 185, 185);
+    margin-left: 0px;
+    border-left: none;
+    padding-left: 0px;
+  }
+}

@@ -116,6 +116,7 @@ img {
 
 .sortCommentContainer {
   color: #3075C1;
+  cursor: pointer;
 }
 
 .sortCommentContainer, .fa-sort-down {
@@ -123,3 +124,48 @@ img {
   justify-content: center;
   margin-left: 10px;
 }
+
+.commentDropbtn {
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.commentDropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.commentDropdown-content {
+  position: absolute;
+  background-color: #fff;
+  min-width: 160px;
+  border-radius: 7px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.commentDropdown-content a, .commentDropdown-content span {
+  color: gray;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.commentDropdown-content a:hover, .commentDropdown-content span:hover {
+  color: black;
+  background-color: #dcedff;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+ .postContainer {
+  padding: 15px;
+ } 
+}
+

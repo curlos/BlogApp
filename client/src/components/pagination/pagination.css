@@ -44,3 +44,38 @@
 .selectedPag:hover {
   background-color: #d6e8fa;
 }
+
+.pagPrevMobile, .pagNextMobile {
+  display: none;
+  padding: 10px;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+}
+
+.pagMobileController {
+  display: none;
+  width: 100%;
+  gap: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  .pagResults {
+    display: none;
+  }
+
+  .pagController {
+    display: none;
+  }
+
+  .pagPrevMobile, .pagNextMobile {
+    display: flex;
+    flex: 2;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .pagMobileController {
+    display: flex;
+  }
+}

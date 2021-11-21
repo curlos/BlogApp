@@ -4,11 +4,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
-* { box-sizing: border-box; }
-
 body {
   margin: 0;
   font-family: Avenir, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
 }
 
 a {

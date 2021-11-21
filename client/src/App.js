@@ -12,18 +12,21 @@ import Register from './components/register/Register';
 import Settings from './components/settings/Settings';
 import UserProfile from './components/user_profile/UserProfile';
 import UserContext from './contexts/UserContext';
+import SidenavModal from "./components/sidenav_modal/SidenavModal";
 
 function App() {
 
   const [loggedInUser, setLoggedInUser] = useState(JSON.parse(localStorage.getItem('user')) || {})
-
-  console.log(loggedInUser)
+  const [showSidenav, setShowSidenav] = useState(false)
 
   return (
     <div className="App">
       <Router>
         <UserContext.Provider value={{loggedInUser, setLoggedInUser}}>
-          <Header />
+
+          {showSidenav ? <SidenavModal showSidenav={showSidenav} setShowSidenav={setShowSidenav}/> : null}
+
+          <Header setShowSidenav={setShowSidenav}/>
 
           <Switch>
             <Route path="/" exact>

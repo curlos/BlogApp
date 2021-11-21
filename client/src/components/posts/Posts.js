@@ -22,6 +22,7 @@ const Posts = () => {
   const [dataLimit, setDataLimit] = useState(2)
   const [pageLimit, setPageLimit] = useState(5)
   const [loading, setLoading] = useState(true)
+  const [showDropdown, setShowDropdown] = useState(false)
 
   useEffect(() => {
     console.log('rerender')
@@ -148,7 +149,7 @@ const Posts = () => {
 
   
   return (
-    loading ? 'Loading...' : (
+    loading ? <div></div> : (
       <div className="postsContainer">
         <div>
           <div className="sortAndSearch">
@@ -163,6 +164,31 @@ const Posts = () => {
               <div className={postsInfo.sortFilter === 'comments' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'comments'})}>Comments</div>
               <div className={postsInfo.sortFilter === 'likes' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'likes'})}>Likes</div>
             </div>
+
+            <span className="postSortDropdown">
+              <div className="postSortContainer" onClick={() => setShowDropdown(!showDropdown)}>{postsInfo.sortFilter.toUpperCase()}<i class="fas fa-sort-down"></i></div>
+
+              {showDropdown ? (
+                <div class="postSortDropdown-content">
+                  <div className={postsInfo.sortFilter === 'newest' ? 'selectedSortFilter' : ''} onClick={() => {
+                    setPostsInfo({...postsInfo, sortFilter: 'newest'})
+                    setShowDropdown(false)
+                  }}>Newest</div>
+                  <div className={postsInfo.sortFilter === 'oldest' ? 'selectedSortFilter' : ''} onClick={() => {
+                    setPostsInfo({...postsInfo, sortFilter: 'oldest'})
+                    setShowDropdown(false)
+                  }}>Oldest</div>
+                  <div className={postsInfo.sortFilter === 'comments' ? 'selectedSortFilter' : ''} onClick={() => {
+                    setPostsInfo({...postsInfo, sortFilter: 'comments'})
+                    setShowDropdown(false)
+                  }}>Comments</div>
+                  <div className={postsInfo.sortFilter === 'likes' ? 'selectedSortFilter' : ''} onClick={() => {
+                    setPostsInfo({...postsInfo, sortFilter: 'likes'})
+                    setShowDropdown(false)
+                  }}>Likes</div>
+                </div>
+              ) : null}
+            </span>
           </div>
 
           {paginatedPosts.map((post) => {

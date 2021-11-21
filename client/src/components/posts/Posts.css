@@ -9,25 +9,23 @@
 .searchBar {
   font-size: 18px;
   padding: 3px;
-  width: 50%;
+  width: 75%;
   border: none;
   border-bottom: 1px solid lightgray;
   -webkit-transition: width 0.4s ease-in-out;
   transition: width 0.4s ease-in-out;
 }
 
-.searchBar:focus {
-  width: 80%;
-  outline: none;
-}
-
 .sortAndSearch {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
+  gap: 10px;
 }
 
 .sortTabOptions {
+  flex: 2;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -50,4 +48,52 @@
 
 .searchBarForm {
   width: 100%;
+  flex: 3;
+}
+
+.postSortDropdown {
+  flex: 2;
+  position: relative;
+  display: none;
+}
+
+.postSortDropdown-content {
+  position: absolute;
+  background-color: #fff;
+  min-width: 100px;
+  border-radius: 7px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  padding: 12px;
+}
+
+.postSortDropdown-content a, .commentDropdown-content span {
+  color: gray;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.postSortDropdown-content a:hover, .postSortDropdown-content span:hover {
+  color: black;
+  background-color: #dcedff;
+  cursor: pointer;
+}
+
+
+@media only screen and (max-width: 600px) {
+  .postsContainer {
+    padding: 10px;
+  }
+
+  .sortTabOptions {
+    display: none;
+  }
+
+  .postSortDropdown {
+    display: inline-block;
+    text-align: right;
+  }
 }

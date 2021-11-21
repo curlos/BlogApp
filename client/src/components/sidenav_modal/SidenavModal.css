@@ -1,0 +1,37 @@
+.modalContainer {
+  position: fixed;
+  z-index: 2;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.modalSidebar {
+  z-index: 3;
+  top: 0;
+  right: 0;
+  width: 200px;
+  background-color: white;
+  color: black;
+  position: fixed;
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.modalContentContainer {
+  padding: 20px;
+  font-size: 25px;
+  font-weight: medium;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: space-between;
+  height: 90%;
+}

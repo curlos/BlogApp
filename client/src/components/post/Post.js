@@ -23,6 +23,8 @@ const Post = () => {
   const [showAddComment, setShowAddComment] = useState(false)
   const [imageError, setImageError] = useState(false)
   const [sortFilter, setSortFilter] = useState('Newest')
+  const [showSortFilters, setShowSortFilters] = useState(false)
+  const [sendingAPIRequest, setSendingAPIRequest] = useState(false)
   
   const { post, author } = postInfo
 
@@ -68,31 +70,46 @@ const Post = () => {
 
   const handleLikePost = async () => {
 
-    if (Object.keys(loggedInUser).length === 0) {
-      history.push('/login')
-      return
+    try {
+      setSendingAPIRequest(true)
+      
+      if (Object.keys(loggedInUser).length === 0) {
+        history.push('/login')
+        return
+      }
+  
+      const body = { userID: loggedInUser._id}
+      const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/posts/post/like/${post._id}`, body)
+  
+      setPostInfo({...postInfo, post: response.data.updatedPost})
+      setLoggedInUser(response.data.updatedUser)
+      setSendingAPIRequest(false)
+    } catch (err) {
+      console.log(err)
+      setSendingAPIRequest(false)
     }
-
-    const body = { userID: loggedInUser._id}
-    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/posts/post/like/${post._id}`, body)
-
-    setPostInfo({...postInfo, post: response.data.updatedPost})
-    setLoggedInUser(response.data.updatedUser)
-
   }
 
   const handleDislikePost = async () => {
 
-    if (Object.keys(loggedInUser).length === 0) {
-      history.push('/login')
-      return
+    try {
+      setSendingAPIRequest(true)
+
+      if (Object.keys(loggedInUser).length === 0) {
+        history.push('/login')
+        return
+      }
+  
+      const body = { userID: loggedInUser._id}
+      const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/posts/post/dislike/${post._id}`, body)
+  
+      setPostInfo({...postInfo, post: response.data.updatedPost})
+      setLoggedInUser(response.data.updatedUser)
+      setSendingAPIRequest(false)
+    } catch (err) {
+      console.log(err)
+      setSendingAPIRequest(false)
     }
-
-    const body = { userID: loggedInUser._id}
-    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/posts/post/dislike/${post._id}`, body)
-
-    setPostInfo({...postInfo, post: response.data.updatedPost})
-    setLoggedInUser(response.data.updatedUser)
   }
 
   const handleDeletePost = async () => {
@@ -141,9 +158,9 @@ const Post = () => {
               </div>
 
               <div className="postVotes">
-                <div><i className={`fas fa-thumbs-up ${Object.keys(loggedInUser).length > 0 && loggedInUser.likedPosts && loggedInUser.likedPosts.includes(post._id) ? 'liked' : null}`} onClick={handleLikePost}></i></div>
+                <div><i className={`fas fa-thumbs-up ${sendingAPIRequest && 'animate-pulse'} ${Object.keys(loggedInUser).length > 0 && loggedInUser.likedPosts && loggedInUser.likedPosts.includes(post._id) ? 'liked' : null}`} onClick={handleLikePost}></i></div>
                 <div className="postVotesNum">{(post.likes && post.dislikes && post.likes.length - post.dislikes.length) || 0}</div>
-                <div><i className={`fas fa-thumbs-down ${Object.keys(loggedInUser).length > 0 && loggedInUser.dislikedPosts && loggedInUser.dislikedPosts.includes(post._id) ? 'disliked' : null}`} onClick={handleDislikePost}></i></div>
+                <div><i className={`fas fa-thumbs-down ${sendingAPIRequest && 'animate-pulse'} ${Object.keys(loggedInUser).length > 0 && loggedInUser.dislikedPosts && loggedInUser.dislikedPosts.includes(post._id) ? 'disliked' : null}`} onClick={handleDislikePost}></i></div>
               </div>  
     
               <div>
@@ -171,14 +188,25 @@ const Post = () => {
             ) : <CommentContainer post={postInfo} setComments={setComments} showAddComment={showAddComment} setShowAddComment={setShowAddComment}/>}
 
             <span>
-              <span className="dropdown">
-                <div className="sortCommentContainer">Sort By: {sortFilter} <i class="fas fa-sort-down"></i></div>
+              <span className="commentDropdown">
+                <div className="sortCommentContainer" onClick={() => setShowSortFilters(!showSortFilters)}>Sort By: {sortFilter} <i class="fas fa-sort-down"></i></div>
 
-                <div class="dropdown-content">
-                  <span onClick={() => setSortFilter('Likes')}>Likes</span>
-                  <span onClick={() => setSortFilter('Newest')}>Newest</span>
-                  <span onClick={() => setSortFilter('Oldest')}>Oldest</span>
-                </div>
+                {showSortFilters ? (
+                  <div class="commentDropdown-content">
+                    <span onClick={() => {
+                      setSortFilter('Likes')
+                      setShowSortFilters(false)
+                    }}>Likes</span>
+                    <span onClick={() => {
+                      setSortFilter('Newest')
+                      setShowSortFilters(false)
+                    }}>Newest</span>
+                    <span onClick={() => {
+                      setSortFilter('Oldest')
+                      setShowSortFilters(false)
+                    }}>Oldest</span>
+                  </div>
+                ) : null}
               </span>
 
               </span>

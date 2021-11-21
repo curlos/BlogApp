@@ -12,6 +12,7 @@ const SmallPost = ({postID, category, paginatedPosts}) => {
   const [postInfo, setPostInfo] = useState({post: {}, author: {}})
   const [imageError, setImageError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [sendingAPIRequest, setSendingAPIRequest] = useState(false)
 
   const { post, author } = postInfo
 
@@ -22,7 +23,6 @@ const SmallPost = ({postID, category, paginatedPosts}) => {
     console.log(imageError)
     
     const fetchFromAPI = async () => {
-
       const postResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/posts/post/${postID}`)
       const authorResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/users/user/${postResponse.data.author}`)
       setPostInfo({post: postResponse.data, author: authorResponse.data})
@@ -34,30 +34,46 @@ const SmallPost = ({postID, category, paginatedPosts}) => {
   }, [postID, category, paginatedPosts])
 
   const handleLikePost = async () => {
+    try {
+      setSendingAPIRequest(true)
 
-    if (Object.keys(loggedInUser).length === 0) {
-      return
+      if (Object.keys(loggedInUser).length === 0) {
+        return
+      }
+
+      const body = { userID: loggedInUser._id}
+      const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/posts/post/like/${post._id}`, body)
+
+      setPostInfo({...postInfo, post: response.data.updatedPost})
+      setLoggedInUser(response.data.updatedUser)
+      setSendingAPIRequest(false)
+    } catch (err) {
+      setSendingAPIRequest(false)
+      console.log(err)
     }
-
-    const body = { userID: loggedInUser._id}
-    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/posts/post/like/${post._id}`, body)
-
-    setPostInfo({...postInfo, post: response.data.updatedPost})
-    setLoggedInUser(response.data.updatedUser)
 
   }
 
   const handleDislikePost = async () => {
 
-    if (Object.keys(loggedInUser).length === 0) {
-      return
+    try {
+      setSendingAPIRequest(true)
+
+      if (Object.keys(loggedInUser).length === 0) {
+        return
+      }
+  
+      const body = { userID: loggedInUser._id}
+      const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/posts/post/dislike/${post._id}`, body)
+  
+      setPostInfo({...postInfo, post: response.data.updatedPost})
+      setLoggedInUser(response.data.updatedUser)
+      setSendingAPIRequest(false)
+      
+    } catch (err) {
+      console.log(err)
+      setSendingAPIRequest(false)
     }
-
-    const body = { userID: loggedInUser._id}
-    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/posts/post/dislike/${post._id}`, body)
-
-    setPostInfo({...postInfo, post: response.data.updatedPost})
-    setLoggedInUser(response.data.updatedUser)
   }
 
   return (
@@ -66,9 +82,9 @@ const SmallPost = ({postID, category, paginatedPosts}) => {
       {isLoading ? <Skeleton type="smallPost" /> : (
         <div className="smallPostContainer">
           <div className="postVotes">
-            <div><i className={`fas fa-thumbs-up ${Object.keys(loggedInUser).length > 0 && loggedInUser.likedPosts && loggedInUser.likedPosts.includes(post._id) ? 'liked' : null}`} onClick={handleLikePost}></i></div>
+            <div><i className={`fas fa-thumbs-up ${sendingAPIRequest && 'animate-pulse'} ${Object.keys(loggedInUser).length > 0 && loggedInUser.likedPosts && loggedInUser.likedPosts.includes(post._id) ? 'liked' : null}`} onClick={handleLikePost}></i></div>
             <div className="postVotesNum">{(post.likes && post.dislikes && post.likes.length - post.dislikes.length) || 0}</div>
-            <div><i className={`fas fa-thumbs-down ${Object.keys(loggedInUser).length > 0 && loggedInUser.dislikedPosts && loggedInUser.dislikedPosts.includes(post._id) ? 'disliked' : null}`} onClick={handleDislikePost}></i></div>
+            <div><i className={`fas fa-thumbs-down ${sendingAPIRequest && 'animate-pulse'} ${Object.keys(loggedInUser).length > 0 && loggedInUser.dislikedPosts && loggedInUser.dislikedPosts.includes(post._id) ? 'disliked' : null}`} onClick={handleDislikePost}></i></div>
           </div>
     
           <Link to={`/post/${post._id}`} className="linkPostContainer">

@@ -53,7 +53,12 @@ export const Pagination = ({ data, setPaginatedPosts, pageLimit, dataLimit, curr
         {getPaginationGroup().map((pageNum) => <div className={`pagNum ${currentPage === pageNum ? 'selectedPag' : ''}`} onClick={changePage}>{pageNum}</div>)}
         
         <div className="pagNum pagNext" onClick={goToNextPage}><i className="fas fa-chevron-right"></i></div>
+      </div>
 
+      <div className="pagMobileController">
+        <div className="pagPrevMobile" onClick={goToPreviousPage}><i className="fas fa-chevron-left"></i> Previous</div>
+
+        <div className="pagNextMobile" onClick={goToNextPage}>Next <i className="fas fa-chevron-right"></i></div>
       </div>
     </div>
   )

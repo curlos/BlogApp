@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import './CommentContainer.css'
 import UserContext from '../../contexts/UserContext'
@@ -8,6 +8,7 @@ const CommentContainer = ({ post, parentComment, setComments, showAddComment, se
   // eslint-disable-next-line no-unused-vars
   const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
   const parentAuthor = parentComment && `@${parentComment.author.firstName} ${parentComment.author.lastName} `
+  const [sendingAPIRequest, setSendingAPIRequest] = useState(false)
 
   const [commentText, setCommentText] = useState(parentComment ? parentAuthor : '')
 
@@ -23,22 +24,26 @@ const CommentContainer = ({ post, parentComment, setComments, showAddComment, se
 
 
   const postComment = async () => {
-    console.log('fcuk you')
-    const body = {
-      content: commentText,
-      author: loggedInUser._id,
-      post: post.post._id,
-      replies: [],
-      likes: []
+    try {
+      setSendingAPIRequest(true)
+    
+      const body = {
+        content: commentText,
+        author: loggedInUser._id,
+        post: post.post._id,
+        replies: [],
+        likes: []
+      }
+      const response = await axios.post(SERVER_URL, body)
+
+      setComments([response.data._id, ...post.post.comments])
+      setSendingAPIRequest(false)
+      setCommentText('')
+      setShowAddComment(false)
+    } catch (err) {
+      console.log(err)
+      setSendingAPIRequest(false)
     }
-    const response = await axios.post(SERVER_URL, body)
-    console.log(response.data)
-
-    console.log([response.data._id, ...post.post.comments])
-
-    setComments([response.data._id, ...post.post.comments])
-    setCommentText('')
-    setShowAddComment(false)
   }
 
   const replyToComment = async () => {
@@ -66,10 +71,10 @@ const CommentContainer = ({ post, parentComment, setComments, showAddComment, se
 
   const getAddCommentButton = () => {
     if (parentComment) {
-      return <button className="reply" onClick={replyToComment}>Reply</button>
+      return <button className={`reply ${sendingAPIRequest && 'animate-pulse'}`} onClick={replyToComment}>Reply</button>
     }
 
-    return <button className="post" onClick={postComment}>Post</button>
+    return <button className={`post ${sendingAPIRequest && 'animate-pulse'}`} onClick={postComment}>Post</button>
   }
 
   const getCommentContainer = () => {
