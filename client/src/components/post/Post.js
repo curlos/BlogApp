@@ -36,12 +36,14 @@ const Post = () => {
       const newComments = await getComments(postResponse.data.comments)
 
       setPostInfo({post: postResponse.data, author: authorResponse.data, comments: getSortedComments(newComments)})
+      setComments(getSortedComments(newComments))
       setLoading(false)
     }
 
     fetchFromAPI()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [comments])
+  }, [])
+  
 
   const getComments = async (commentIDs) => {
     const comments = []
@@ -124,8 +126,7 @@ const Post = () => {
     }
   }
 
-  console.log(postInfo.comments)
-  console.log(post)
+  console.log(comments)
 
   return (
     <div>
@@ -181,7 +182,7 @@ const Post = () => {
             
           <div className="postCommentsContainer">
 
-            <div id="postCommentSection" className="">Comments ({post.comments.length})</div>
+            <div id="postCommentSection" className="">Comments ({comments.length})</div>
 
             {Object.keys(loggedInUser).length < 1 ? (
               <Link to="/login" className="loginToAdd">Log in to add comment</Link>
@@ -213,7 +214,7 @@ const Post = () => {
 
     
             <div href='#comments' className="commentsContainer">
-              {post.comments.map((commentID) => <Comment commentID={commentID} post={postInfo}/>)}
+              {comments.map((comment) => <Comment commentID={comment._id} post={postInfo}/>)}
             </div>
           </div>
           

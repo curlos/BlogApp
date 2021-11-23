@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import {
-  BrowserRouter as Router, Route, Switch
+  BrowserRouter as Router, Route, Switch,
 } from "react-router-dom";
+import { Redirect } from "react-router";
 import './App.css';
 import Header from './components/header/Header';
 import Login from './components/login/Login';
@@ -42,11 +43,15 @@ function App() {
             </Route>
 
             <Route path="/new-post" exact>
-              <PostForm />
+              {Object.keys(loggedInUser).length < 1 ? <Redirect to="/login" /> : (
+                <PostForm />
+              )}
             </Route>
 
             <Route path="/edit-post/:id" exact>
-              <PostForm />
+              {Object.keys(loggedInUser).length < 1 ? <Redirect to="/login" /> : (
+                <PostForm />
+              )}
             </Route>
 
             <Route path="/post/:id" exact>
@@ -62,7 +67,9 @@ function App() {
             </Route>
 
             <Route path="/settings" exact>
-              <Settings />
+              {Object.keys(loggedInUser).length < 1 ? <Redirect to="/login" /> : (
+                <Settings />
+              )}
             </Route>
           </Switch>
         </UserContext.Provider>

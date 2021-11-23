@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router'
 import UserContext from '../../contexts/UserContext'
@@ -14,6 +15,13 @@ const SidenavModal = ({ showSidenav, setShowSidenav }) => {
     e.stopPropagation()
   }
 
+  const handleLogout = async () => {
+    await axios.get(`${process.env.REACT_APP_SERVER_URL}/users/logout`)
+    setLoggedInUser({})
+    localStorage.setItem('user', null)
+    history.push('/')
+  }
+
   return (
     <div className="modalContainer" onClick={() => setShowSidenav(!showSidenav)}>
       <aside className="modalSidebar" onClick={handleBubblingDownClick}>
@@ -27,15 +35,40 @@ const SidenavModal = ({ showSidenav, setShowSidenav }) => {
               )}
             </div>
 
-            <div className="sidenavUserOptions">
-              <div>
-                <Link to={`/author/${loggedInUser._id}`} onClick={() => setShowSidenav(false)}>My Profile</Link>
+            {Object.keys(loggedInUser).length > 0 ? (
+              <div className="sidenavUserOptions">
+                <div>
+                  <Link to={`/new-post`} onClick={() => setShowSidenav(false)}>Write</Link>
+                </div>
+
+                <div>
+                  <Link to={`/author/${loggedInUser._id}`} onClick={() => setShowSidenav(false)}>My Profile</Link>
+                </div>
+                
+                <div>
+                  <Link to="/settings" onClick={() => setShowSidenav(false)}>Settings</Link>
+                </div>
+
+                <div>
+                  <a href="/" onClick={handleLogout}>Log Out</a>
+                </div>
               </div>
-              
-              <div>
-                <Link to="/settings" onClick={() => setShowSidenav(false)}>Settings</Link>
+            ) : (
+              <div className="sidenavUserOptions">
+                <div>
+                  <Link to={`/new-post`} onClick={() => setShowSidenav(false)}>Write</Link>
+                </div>
+                
+                <div>
+                  <Link to={`/login`} onClick={() => setShowSidenav(false)}>Login</Link>
+                </div>
+                
+                <div>
+                  <Link to="/register" onClick={() => setShowSidenav(false)}>Register</Link>
+                </div>
+
               </div>
-            </div>
+            )}
           </div>
         </div>
       </aside>

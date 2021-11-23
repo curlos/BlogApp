@@ -3,8 +3,9 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
 }
 
-input {
+.postFormContainer input {
   margin-bottom: 20px;
+  width: 100%;
 }
 
 input[type="checkbox"] {
@@ -24,4 +25,10 @@ input[type="checkbox"] {
 
 .postArticleButton:hover, .editArticleButton:hover {
   background-color: #215083;
+}
+
+@media only screen and (max-width: 600px) {
+  .postFormContainer {
+    padding: 5px;
+  }
 }

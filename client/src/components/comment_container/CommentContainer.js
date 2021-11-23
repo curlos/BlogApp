@@ -92,13 +92,13 @@ const CommentContainer = ({ post, parentComment, setComments, showAddComment, se
     } else {
       return (
         showAddComment ? <div className="newCommentContainer">
-          <textarea placeholder="Add a comment..." value={commentText} onChange={handleChangeParent}></textarea>
+          <textarea placeholder="Add a comment..." className="commentTextArea" value={commentText} onChange={handleChangeParent}></textarea>
           <div className="newCommentActionButtons">
             <button className="cancel" onClick={() => {setShowAddComment(false) && setCommentText('')}}>Cancel</button>
             {getAddCommentButton()}
           </div>
         </div> : (
-          <textarea placeholder="Add a comment..." onFocus={() => setShowAddComment(true)} className="miniTextArea"></textarea>
+          <textarea placeholder="Add a comment..." onFocus={() => setShowAddComment(true)} className="commentTextArea miniTextArea"></textarea>
         )
       )
     }

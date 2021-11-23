@@ -16,45 +16,48 @@ export default function Skeleton({ type }) {
   );
 
   const FullPostSkeleton = () => (
-    <div className="fullPostSk">
-      <div className="fullPostSkImg"></div>
-      <div className="fullPostSkInfo">
-        <div className="fullPostSkDetail">
-          <div className="fullPostSkTitle"></div>
-          <div className="fullPostSkTitle sm"></div>
-          <div className="fullPostSkText sm"></div>
-        </div>
-      </div>
-
-      <div className="fullPostSkMoreDetails">
-        <div className="fullPostSkAuthor">
-          <div className="fullPostSkIcon"></div>
-          <div className="fullPostSkAuthorDetail"></div>
-          <div className="fullPostSkAuthorDetail"></div>
+    <div className="centerSk">
+      <div className="fullPostSk">
+        <div className="fullPostSkImg"></div>
+        <div className="fullPostSkInfo">
+          <div className="fullPostSkDetail">
+            <div className="fullPostSkTitle"></div>
+            <div className="fullPostSkTitle sm"></div>
+            <div className="fullPostSkText sm"></div>
+          </div>
         </div>
 
-        <div className="fullPostSkAuthor right">
-          <div className="fullPostSkFeedback"></div>
+        <div className="fullPostSkMoreDetails">
+          <div className="fullPostSkAuthor">
+            <div className="fullPostSkIcon"></div>
+            <div className="fullPostSkAuthorDetail"></div>
+            <div className="fullPostSkAuthorDetail"></div>
+          </div>
+
+          <div className="fullPostSkAuthor right">
+            <div className="fullPostSkFeedback"></div>
+          </div>
         </div>
-      </div>
 
-      <div className="fullPostSkContent">
-        <div className="fullPostSkContentLine"></div>
-        <div className="fullPostSkContentLine"></div>
-        <div className="fullPostSkContentLine"></div>
-        <div className="fullPostSkContentLine"></div>
-        <div className="fullPostSkContentLine"></div>
-        <div className="fullPostSkContentLine"></div>
-        <div className="fullPostSkContentLine"></div>
-        <div className="fullPostSkContentLine"></div>
-        <div className="fullPostSkContentLine sm"></div>
-      </div>
+        <div className="fullPostSkContent">
+          <div className="fullPostSkContentLine"></div>
+          <div className="fullPostSkContentLine"></div>
+          <div className="fullPostSkContentLine"></div>
+          <div className="fullPostSkContentLine"></div>
+          <div className="fullPostSkContentLine"></div>
+          <div className="fullPostSkContentLine"></div>
+          <div className="fullPostSkContentLine"></div>
+          <div className="fullPostSkContentLine"></div>
+          <div className="fullPostSkContentLine sm"></div>
+        </div>
 
-      <div className="fullPostSkNewCommentsContainer">
-        <div className="fullPostSkCommentsNum"></div>
-        <div className="fullPostSkCommentContainer"></div>
+        <div className="fullPostSkNewCommentsContainer">
+          <div className="fullPostSkCommentsNum"></div>
+          <div className="fullPostSkCommentContainer"></div>
+        </div>
       </div>
     </div>
+    
   );
 
   const CommentSkeleton = () => {
@@ -75,10 +78,12 @@ export default function Skeleton({ type }) {
   }
 
   const UserProfileSkeleton = () => (
-    <div className="userProfileSk">
-      <div className="userProfileSkIcon"></div>
-      <div className="userProfileSkName"></div>
-      <div className="userProfileSkDesc"></div>
+    <div className="centerSk">
+      <div className="userProfileSk">
+        <div className="userProfileSkIcon"></div>
+        <div className="userProfileSkName"></div>
+        <div className="userProfileSkDesc"></div>
+      </div>
     </div>
   )
 

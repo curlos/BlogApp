@@ -118,6 +118,7 @@
 .sidebarButton {
   display: none;
   text-align: right;
+  cursor: pointer;
 }
 
 

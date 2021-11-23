@@ -25,6 +25,7 @@ const Posts = () => {
   const [showDropdown, setShowDropdown] = useState(false)
 
   useEffect(() => {
+    window.scrollTo(0,0)
     console.log('rerender')
     const fetchFromAPI = async () => {
       console.log('getting new posts')
@@ -158,11 +159,13 @@ const Posts = () => {
               <input type="text" className="searchBar" value={searchText} onChange={(e) => setSearchText(e.target.value)}></input>
             </form>
 
-            <div className="sortTabOptions">
-              <div className={postsInfo.sortFilter === 'newest' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'newest'})}>Newest</div>
-              <div className={postsInfo.sortFilter === 'oldest' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'oldest'})}>Oldest</div>
-              <div className={postsInfo.sortFilter === 'comments' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'comments'})}>Comments</div>
-              <div className={postsInfo.sortFilter === 'likes' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'likes'})}>Likes</div>
+            <div>
+              <div className="sortTabOptions">
+                <div className={postsInfo.sortFilter === 'newest' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'newest'})}>Newest</div>
+                <div className={postsInfo.sortFilter === 'oldest' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'oldest'})}>Oldest</div>
+                <div className={postsInfo.sortFilter === 'comments' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'comments'})}>Comments</div>
+                <div className={postsInfo.sortFilter === 'likes' ? 'selectedSortFilter' : ''} onClick={() => setPostsInfo({...postsInfo, sortFilter: 'likes'})}>Likes</div>
+              </div>
             </div>
 
             <span className="postSortDropdown">

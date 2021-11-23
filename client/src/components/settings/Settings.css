@@ -1,5 +1,5 @@
 .settingsContainer {
-  padding: 30px;
+  padding: 50px;
 }
 
 .settingsTitle {
@@ -7,6 +7,15 @@
 }
 
 .aboutMeTextarea {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100px;
+  padding: 20px;
+  resize: none;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  margin: 15px auto;
+
   border-radius: 0px;
   border: 1px solid lightgray;
 }
@@ -21,7 +30,6 @@
   background-color: red;
   color: white;
   border: none;
-  margin-left: 20px;
 }
 
 .profilePicImg {
@@ -30,4 +38,29 @@
   width: 150px;
   height: 150px;
   margin: 10px auto;
+}
+
+.settingsContainer input {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.settingsButtons {
+  display: flex;
+  gap: 5px;
+}
+
+@media only screen and (max-width: 600px) {
+  .settingsContainer {
+    padding: 20px;
+  }
+  
+  .settingsButtons {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .updateProfileButton, .deleteAccountButton {
+    width: 100%;
+  }
 }

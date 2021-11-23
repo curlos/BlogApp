@@ -23,6 +23,7 @@ const Comment = ({ post, commentID, replyComment }) => {
 
   useEffect(() => {
     const fetchFromAPI = async () => {
+      console.log(commentID)
       const commentResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/comment/${commentID}`)
       const authorResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/users/user/${commentResponse.data.author}`)
       setCommentInfo({comment: commentResponse.data, author: authorResponse.data})
@@ -76,6 +77,8 @@ const Comment = ({ post, commentID, replyComment }) => {
     }
 
   }
+
+  console.log(commentInfo)
 
   return (
     <div>

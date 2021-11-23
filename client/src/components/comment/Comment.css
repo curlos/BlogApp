@@ -82,7 +82,7 @@
   }
   
   .replyComment {
-    border-bottom: 2px solid rgb(185, 185, 185);
+    border-bottom: 0px;
     margin-left: 0px;
     border-left: none;
     padding-left: 0px;

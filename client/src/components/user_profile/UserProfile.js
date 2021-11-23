@@ -17,6 +17,7 @@ const UserProfile = () => {
   const [selectedType, setSelectedType] = useState('POSTS')
   
   useEffect(() => {
+    window.scrollTo(0,0)
     const fetchFromAPI = async () => {
       const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/users/user/${id}`)
       const userPosts = await getAllUserPosts(response.data.posts)

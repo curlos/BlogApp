@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { passwordStrength } from 'check-password-strength';
 import * as EmailValidator from 'email-validator';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Link,
   useHistory
@@ -21,6 +21,10 @@ const Register = () => {
   const [password, setPassword] = useState({value: '', strength: false})
   const [confirmPassword, setConfirmPassword] = useState({value: '', strength: false})
   const [errMessage, setErrMessage] = useState('')
+
+  useEffect(() => {
+    window.scrollTo(0,0)
+  }, [])
 
   const handleInputChange = (e, inputType) => {
     console.log(inputType)

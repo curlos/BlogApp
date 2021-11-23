@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   useHistory
 } from "react-router-dom";
@@ -23,9 +23,9 @@ const Settings = () => {
   const [file, setFile] = useState(null)
   // const [loading, setLoading] = useState(true)
 
-  if (Object.keys(loggedInUser).length < 1) {
-    history.push('/')
-  }
+  useEffect(() => {
+    window.scrollTo(0,0)
+  }, [])
 
   const handleUpdateProfile = async () => {
     const body = {
@@ -89,8 +89,14 @@ const Settings = () => {
       <div>About me</div>
       <textarea className="aboutMeTextarea" value={aboutMe} onChange={(e) => setAboutMe(e.target.value)}></textarea>
       
-      <button className="updateProfileButton" onClick={handleUpdateProfile}>Update profile</button>
-      <button className="deleteAccountButton">Delete account</button>
+      <div className="settingsButtons">
+        <div>
+          <button className="updateProfileButton" onClick={handleUpdateProfile}>Update profile</button>
+        </div>
+        <div>
+          <button className="deleteAccountButton">Delete account</button>
+        </div>
+      </div>
     </div>
     
   )

@@ -25,6 +25,7 @@ const PostForm = () => {
   const categories = ['TECH', 'LIFE', 'SPORTS', 'ART', 'FOOD', 'DIY', 'HEALTH', 'FITNESS']
 
   useEffect(() => {
+    window.scrollTo(0,0)
     const fetchFromAPI = async () => {
       const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/posts/post/${id}`)
       console.log(response.data)

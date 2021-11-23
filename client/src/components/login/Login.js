@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as EmailValidator from 'email-validator';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Link,
   useHistory
@@ -16,6 +16,10 @@ const Login = () => {
 
   const [email, setEmail] = useState({value: '', valid: false})
   const [password, setPassword] = useState({value: '', strength: false})
+
+  useEffect(() => {
+    window.scrollTo(0,0)
+  }, [])
  
   const handleInputChange = (e, inputType) => {
     console.log(inputType)
