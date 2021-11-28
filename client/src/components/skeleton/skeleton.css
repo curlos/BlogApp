@@ -211,6 +211,7 @@
   display: flex;
   width: 100%;
   animation: skeleton 1s ease infinite alternate;
+  margin: 10px auto;
 }
 
 .commentSk.skReply {

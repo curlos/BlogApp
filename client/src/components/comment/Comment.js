@@ -8,7 +8,7 @@ import Skeleton from '../skeleton/Skeleton';
 import './Comment.css';
 
 
-const Comment = ({ post, commentID, replyComment }) => {
+const Comment = ({ post, commentObj, commentID, replyComment }) => {
 
   const history = useHistory()
   const { loggedInUser, setLoggedInUser} = React.useContext(UserContext)
@@ -23,10 +23,16 @@ const Comment = ({ post, commentID, replyComment }) => {
 
   useEffect(() => {
     const fetchFromAPI = async () => {
-      console.log(commentID)
-      const commentResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/comment/${commentID}`)
-      const authorResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/users/user/${commentResponse.data.author}`)
-      setCommentInfo({comment: commentResponse.data, author: authorResponse.data})
+
+      if (!commentObj) {
+        const commentResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/comments/comment/${commentID}`)
+        const authorResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/users/user/${commentResponse.data.author}`)
+        setCommentInfo({comment: commentResponse.data, author: authorResponse.data})
+      } else {
+        const authorResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/users/user/${commentObj.author}`)
+        setCommentInfo({comment: commentObj, author: authorResponse.data})
+      }
+  
       setLoading(false)
     }
 
@@ -64,7 +70,7 @@ const Comment = ({ post, commentID, replyComment }) => {
         return
       }
   
-      const body = { userID: loggedInUser._id}
+      const body = { userID: loggedInUser._id }
       const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/comments/comment/dislike/${comment._id}`, body)
   
       setCommentInfo({...commentInfo, comment: response.data.updatedComment})
@@ -77,8 +83,6 @@ const Comment = ({ post, commentID, replyComment }) => {
     }
 
   }
-
-  console.log(commentInfo)
 
   return (
     <div>

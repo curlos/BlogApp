@@ -23,18 +23,25 @@ router.get('/comment/:id', async (req, res) => {
 })
 
 router.post('/comment', async (req, res) => {
-  const comment = new Comment({...req.body})
+  try {
+    const comment = new Comment({...req.body})
 
-  const post = await Post.findOne({_id: req.body.post})
-  const user = await User.findOne({_id: req.body.author})
+    const post = await Post.findOne({_id: req.body.post})
+    const user = await User.findOne({_id: req.body.author})
 
-  post.comments = [...post.comments, comment]
-  user.comments = [...user.comments, comment]
+    post.comments = [...post.comments, comment]
+    user.comments = [...user.comments, comment]
 
-  comment.save()
-  post.save()
-  user.save()
-  res.json(comment)
+    await comment.save()
+    await post.save()
+    await user.save()
+    console.log(comment)
+
+    res.json(comment)
+  } catch (err) {
+    console.log(err)
+    console.dir(err)
+  }
 })
 
 router.post('/comment/reply', async (req, res) => {

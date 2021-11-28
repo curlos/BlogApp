@@ -43,6 +43,8 @@ const Post = () => {
     fetchFromAPI()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+
   
 
   const getComments = async (commentIDs) => {
@@ -214,7 +216,12 @@ const Post = () => {
 
     
             <div href='#comments' className="commentsContainer">
-              {comments.map((comment) => <Comment commentID={comment._id} post={postInfo}/>)}
+              {comments.map((comment) => {
+
+                console.log(comment)
+
+                 return <Comment commentObj={comment} commentID={comment._id} post={postInfo}/>
+              })}
             </div>
           </div>
           
